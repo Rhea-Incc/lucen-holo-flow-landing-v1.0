@@ -1,13 +1,11 @@
 import { motion } from 'framer-motion';
+import { OptimizedVideo } from './OptimizedMedia';
 
 export default function LucenDefinition() {
   return (
     <section className="relative py-32 px-6 overflow-hidden">
-      {/* Background holographic loop */}
       <div className="absolute inset-0 opacity-20 pointer-events-none">
-        <video autoPlay muted loop playsInline className="w-full h-full object-cover">
-          <source src="/media/Track-overlay_1.mp4" type="video/mp4" />
-        </video>
+        <OptimizedVideo src="/media/Track-overlay_1.mp4" className="w-full h-full object-cover" />
       </div>
 
       <div className="max-w-6xl mx-auto relative z-10">

@@ -1,5 +1,6 @@
 import ParticleField from '@/components/ParticleField';
 import CursorGlow from '@/components/CursorGlow';
+import LucenHeader from '@/components/LucenHeader';
 import LucenHero from '@/components/LucenHero';
 import LucenDefinition from '@/components/LucenDefinition';
 import LucenOfferings from '@/components/LucenOfferings';
@@ -17,6 +18,7 @@ const Index = () => {
     <div className="relative min-h-screen">
       <ParticleField />
       <CursorGlow />
+      <LucenHeader />
       <LucenHero />
       <LucenDefinition />
       <LucenOfferings />
