@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion';
+import { OptimizedVideo } from './OptimizedMedia';
 import GlassPanel from './GlassPanel';
 
 const offerings = [
@@ -53,15 +54,10 @@ export default function LucenOfferings() {
           {offerings.map((item, i) => (
             <GlassPanel key={item.title} delay={i * 0.1} className="p-0 overflow-hidden group cursor-default">
               <div className="relative aspect-video overflow-hidden">
-                <video
-                  autoPlay
-                  muted
-                  loop
-                  playsInline
+                <OptimizedVideo
+                  src={item.video}
                   className="w-full h-full object-cover opacity-60 group-hover:opacity-80 transition-opacity duration-700"
-                >
-                  <source src={item.video} type="video/mp4" />
-                </video>
+                />
                 <div className="absolute inset-0 bg-gradient-to-t from-background via-background/60 to-transparent" />
               </div>
               <div className="p-8 -mt-12 relative z-10">

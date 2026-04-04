@@ -1,6 +1,9 @@
 import { motion } from 'framer-motion';
 
-const networkNodes = ['Malls', 'Airports', 'Banks', 'Retail', 'Events', 'Corporate'];
+const networkNodes = [
+  'Malls', 'Airports', 'Banks', 'Retail', 'Events', 'Corporate',
+  'Hotels', 'Train Stations', 'Stadiums', 'Hospitals', 'Convention Centers', 'Metro Stations',
+];
 
 export default function LucenNetwork() {
   return (
@@ -22,41 +25,70 @@ export default function LucenNetwork() {
           </p>
         </motion.div>
 
-        {/* Abstract city grid */}
         <motion.div
           initial={{ opacity: 0, scale: 0.95 }}
           whileInView={{ opacity: 1, scale: 1 }}
           viewport={{ once: true }}
           transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
-          className="glass-panel-elevated glow-edge p-10 sm:p-16"
+          className="glass-panel-elevated glow-edge p-10 sm:p-16 relative"
         >
-          <div className="relative flex flex-wrap justify-center gap-8">
+          {/* Animated connection lines */}
+          <div className="absolute inset-0 pointer-events-none overflow-hidden rounded-lg">
+            <svg className="w-full h-full opacity-15" viewBox="0 0 100 100" preserveAspectRatio="none">
+              {[0, 1, 2, 3, 4].map((i) => (
+                <motion.line
+                  key={`h-${i}`}
+                  x1="0" y1={20 + i * 15} x2="100" y2={20 + i * 15}
+                  stroke="hsl(192 95% 60%)"
+                  strokeWidth="0.15"
+                  initial={{ pathLength: 0, opacity: 0 }}
+                  whileInView={{ pathLength: 1, opacity: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 2, delay: i * 0.2 }}
+                />
+              ))}
+              {[0, 1, 2, 3].map((i) => (
+                <motion.line
+                  key={`v-${i}`}
+                  x1={15 + i * 22} y1="0" x2={15 + i * 22} y2="100"
+                  stroke="hsl(260 80% 65%)"
+                  strokeWidth="0.12"
+                  initial={{ pathLength: 0, opacity: 0 }}
+                  whileInView={{ pathLength: 1, opacity: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 2, delay: 0.5 + i * 0.2 }}
+                />
+              ))}
+            </svg>
+          </div>
+
+          <div className="relative grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-6">
             {networkNodes.map((node, i) => (
               <motion.div
                 key={node}
                 initial={{ opacity: 0, scale: 0 }}
                 whileInView={{ opacity: 1, scale: 1 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: 0.2 + i * 0.1, ease: [0.16, 1, 0.3, 1] }}
+                transition={{ duration: 0.5, delay: 0.2 + i * 0.08, ease: [0.16, 1, 0.3, 1] }}
+                whileHover={{ scale: 1.1 }}
                 className="relative flex flex-col items-center"
               >
-                <div
-                  className="w-16 h-16 rounded-full border border-primary/30 flex items-center justify-center mb-3"
-                  style={{ boxShadow: '0 0 30px -8px hsl(192 95% 60% / 0.3)' }}
+                <motion.div
+                  animate={{
+                    boxShadow: [
+                      '0 0 20px -8px hsl(192 95% 60% / 0.2)',
+                      '0 0 40px -8px hsl(192 95% 60% / 0.5)',
+                      '0 0 20px -8px hsl(192 95% 60% / 0.2)',
+                    ],
+                  }}
+                  transition={{ duration: 3, repeat: Infinity, delay: i * 0.3 }}
+                  className="w-14 h-14 rounded-full border border-primary/30 flex items-center justify-center mb-3"
                 >
                   <div className="w-2 h-2 rounded-full bg-primary animate-pulse-glow" />
-                </div>
-                <span className="font-display text-xs tracking-wider text-muted-foreground uppercase">{node}</span>
+                </motion.div>
+                <span className="font-display text-[10px] tracking-wider text-muted-foreground uppercase text-center">{node}</span>
               </motion.div>
             ))}
-            {/* Light connections (decorative) */}
-            <div className="absolute inset-0 pointer-events-none">
-              <svg className="w-full h-full opacity-10" viewBox="0 0 100 100" preserveAspectRatio="none">
-                <line x1="10" y1="50" x2="90" y2="50" stroke="hsl(192 95% 60%)" strokeWidth="0.3" />
-                <line x1="30" y1="20" x2="70" y2="80" stroke="hsl(192 95% 60%)" strokeWidth="0.2" />
-                <line x1="50" y1="10" x2="50" y2="90" stroke="hsl(260 80% 65%)" strokeWidth="0.2" />
-              </svg>
-            </div>
           </div>
         </motion.div>
       </div>
