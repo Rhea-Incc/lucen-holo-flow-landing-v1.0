@@ -39,7 +39,7 @@ interface OptimizedVideoProps {
   onEnded?: () => void;
 }
 
-export function OptimizedVideo({ src, className = '', style, priority = false }: OptimizedVideoProps) {
+export function OptimizedVideo({ src, className = '', style, priority = false, loop = true, onEnded }: OptimizedVideoProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [loaded, setLoaded] = useState(false);
 
@@ -71,9 +71,10 @@ export function OptimizedVideo({ src, className = '', style, priority = false }:
       ref={videoRef}
       autoPlay
       muted
-      loop
+      loop={loop}
       playsInline
       onCanPlay={() => setLoaded(true)}
+      onEnded={onEnded}
       className={`transition-opacity duration-500 ${loaded ? 'opacity-100' : 'opacity-0'} ${className}`}
       style={style}
     >
