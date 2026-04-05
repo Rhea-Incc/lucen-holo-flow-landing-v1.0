@@ -1,42 +1,15 @@
-import { useRef, useEffect, useState } from 'react';
+import { OptimizedVideo } from './OptimizedMedia';
 
 export default function LucenHero() {
-  const videoRef = useRef<HTMLVideoElement>(null);
-  const [ready, setReady] = useState(false);
-
-  useEffect(() => {
-    const v = videoRef.current;
-    if (!v) return;
-    v.preload = 'auto';
-    // Force immediate load & play
-    const tryPlay = () => {
-      v.play().catch(() => {});
-      setReady(true);
-    };
-    if (v.readyState >= 3) {
-      tryPlay();
-    } else {
-      v.addEventListener('canplay', tryPlay, { once: true });
-      v.load();
-    }
-    return () => v.removeEventListener('canplay', tryPlay);
-  }, []);
-
   return (
     <section className="relative flex min-h-screen items-center justify-center overflow-hidden">
       <div className="absolute inset-0 z-0">
-        <video
-          ref={videoRef}
-          autoPlay
-          muted
-          loop
-          playsInline
-          preload="auto"
-          className={`w-full h-full object-cover transition-opacity duration-300 ${ready ? 'opacity-100' : 'opacity-0'}`}
+        <OptimizedVideo
+          src="/media/desktop091224.mp4"
+          className="w-full h-full object-cover"
           style={{ filter: 'brightness(0.7) saturate(1.2)' }}
-        >
-          <source src="/media/desktop091224.mp4" type="video/mp4" />
-        </video>
+          priority
+        />
         <div
           className="absolute inset-0"
           style={{
