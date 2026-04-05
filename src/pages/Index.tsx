@@ -20,6 +20,7 @@ const Index = () => {
       <ParticleField />
       <CursorGlow />
       <LucenHeader />
+      <WhatsAppButton />
       <LucenHero />
       <LucenDefinition />
       <LucenOfferings />
