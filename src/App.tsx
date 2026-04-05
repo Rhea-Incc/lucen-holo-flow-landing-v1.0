@@ -11,6 +11,7 @@ import IndustriesIndex from "./pages/IndustriesIndex.tsx";
 import Services from "./pages/Services.tsx";
 import Contact from "./pages/Contact.tsx";
 import GetStarted from "./pages/GetStarted.tsx";
+import About from "./pages/About.tsx";
 
 const queryClient = new QueryClient();
 
