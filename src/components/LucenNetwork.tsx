@@ -1,8 +1,32 @@
 import { motion } from 'framer-motion';
+import {
+  BriefcaseBusiness,
+  Building2,
+  HeartPulse,
+  Hotel,
+  Landmark,
+  Plane,
+  ShoppingBag,
+  Store,
+  Ticket,
+  TrainFront,
+  TramFront,
+  Trophy,
+} from 'lucide-react';
 
 const networkNodes = [
-  'Malls', 'Airports', 'Banks', 'Retail', 'Events', 'Corporate',
-  'Hotels', 'Train Stations', 'Stadiums', 'Hospitals', 'Convention Centers', 'Metro Stations',
+  { label: 'Malls', Icon: ShoppingBag },
+  { label: 'Airports', Icon: Plane },
+  { label: 'Banks', Icon: Landmark },
+  { label: 'Retail', Icon: Store },
+  { label: 'Events', Icon: Ticket },
+  { label: 'Corporate', Icon: BriefcaseBusiness },
+  { label: 'Hotels', Icon: Hotel },
+  { label: 'Train Stations', Icon: TrainFront },
+  { label: 'Stadiums', Icon: Trophy },
+  { label: 'Hospitals', Icon: HeartPulse },
+  { label: 'Convention Centers', Icon: Building2 },
+  { label: 'Metro Stations', Icon: TramFront },
 ];
 
 export default function LucenNetwork() {
@@ -39,7 +63,7 @@ export default function LucenNetwork() {
                 <motion.line
                   key={`h-${i}`}
                   x1="0" y1={20 + i * 15} x2="100" y2={20 + i * 15}
-                  stroke="hsl(192 95% 60%)"
+                  stroke="hsl(var(--primary) / 0.55)"
                   strokeWidth="0.15"
                   initial={{ pathLength: 0, opacity: 0 }}
                   whileInView={{ pathLength: 1, opacity: 1 }}
@@ -51,7 +75,7 @@ export default function LucenNetwork() {
                 <motion.line
                   key={`v-${i}`}
                   x1={15 + i * 22} y1="0" x2={15 + i * 22} y2="100"
-                  stroke="hsl(260 80% 65%)"
+                  stroke="hsl(var(--accent) / 0.55)"
                   strokeWidth="0.12"
                   initial={{ pathLength: 0, opacity: 0 }}
                   whileInView={{ pathLength: 1, opacity: 1 }}
@@ -63,9 +87,9 @@ export default function LucenNetwork() {
           </div>
 
           <div className="relative grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-6">
-            {networkNodes.map((node, i) => (
+            {networkNodes.map(({ label, Icon }, i) => (
               <motion.div
-                key={node}
+                key={label}
                 initial={{ opacity: 0, scale: 0 }}
                 whileInView={{ opacity: 1, scale: 1 }}
                 viewport={{ once: true }}
@@ -76,17 +100,17 @@ export default function LucenNetwork() {
                 <motion.div
                   animate={{
                     boxShadow: [
-                      '0 0 20px -8px hsl(192 95% 60% / 0.2)',
-                      '0 0 40px -8px hsl(192 95% 60% / 0.5)',
-                      '0 0 20px -8px hsl(192 95% 60% / 0.2)',
+                      '0 0 20px -8px hsl(var(--primary) / 0.2)',
+                      '0 0 40px -8px hsl(var(--primary) / 0.5)',
+                      '0 0 20px -8px hsl(var(--primary) / 0.2)',
                     ],
                   }}
                   transition={{ duration: 3, repeat: Infinity, delay: i * 0.3 }}
-                  className="w-14 h-14 rounded-full border border-primary/30 flex items-center justify-center mb-3"
+                  className="w-14 h-14 rounded-full border border-primary/30 bg-surface-glass/20 flex items-center justify-center mb-3"
                 >
-                  <div className="w-2 h-2 rounded-full bg-primary animate-pulse-glow" />
+                  <Icon className="w-5 h-5 text-primary animate-pulse-glow" />
                 </motion.div>
-                <span className="font-display text-[10px] tracking-wider text-muted-foreground uppercase text-center">{node}</span>
+                <span className="font-display text-[10px] tracking-wider text-muted-foreground uppercase text-center">{label}</span>
               </motion.div>
             ))}
           </div>

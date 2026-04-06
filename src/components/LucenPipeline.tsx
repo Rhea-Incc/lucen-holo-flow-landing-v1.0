@@ -21,7 +21,7 @@ export default function LucenPipeline() {
           className="text-center mb-20"
         >
           <p className="text-sm font-display tracking-[0.3em] uppercase text-primary mb-4">System Flow</p>
-          <h2 className="font-display text-4xl sm:text-5xl font-bold tracking-tight text-foreground">
+          <h2 className="font-display text-5xl sm:text-6xl font-bold tracking-tight text-foreground">
             How It Works
           </h2>
         </motion.div>
@@ -42,11 +42,11 @@ export default function LucenPipeline() {
                 whileHover={{ y: -8, boxShadow: '0 0 40px -8px hsl(192 95% 60% / 0.3)' }}
                 className="glass-panel-elevated glow-edge p-5 text-center group cursor-default relative"
               >
-                <div className="text-2xl text-primary text-glow mb-3 group-hover:scale-110 transition-transform duration-300">
+                <div className="text-3xl text-primary text-glow mb-4 group-hover:scale-110 transition-transform duration-300">
                   {node.icon}
                 </div>
-                <h4 className="font-display text-sm font-semibold text-foreground mb-2">{node.label}</h4>
-                <p className="text-muted-foreground font-body text-xs leading-relaxed opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                <h4 className="font-display text-base sm:text-lg font-semibold text-foreground mb-2">{node.label}</h4>
+                <p className="text-muted-foreground font-body text-sm leading-relaxed opacity-70 group-hover:opacity-100 transition-opacity duration-300">
                   {node.detail}
                 </p>
                 {/* Light connector dot */}

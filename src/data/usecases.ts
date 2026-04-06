@@ -66,9 +66,9 @@ export const useCases: UseCase[] = [
   {
     slug: 'corporate-lobby',
     title: 'Corporate Lobby Installation',
-    image: '/media/gizmo-holograms-rotator-4_1920x850.jpg',
-    images: ['/media/gizmo-holograms-rotator-4_1920x850.jpg'],
-    videos: ['/media/Track-overlay_1.mp4'],
+    image: '/media/corporate_lobby.jpg',
+    images: ['/media/corporate_lobby.jpg'],
+    videos: ['/media/corporate_lobby.mp4', '/media/Track-overlay_1.mp4'],
     description: 'Transform corporate lobbies into brand showcases with holographic installations that impress visitors and reinforce brand identity.',
     highlights: ['Brand storytelling holograms', 'Visitor experience design', 'Real-time content management', 'Visitor analytics'],
   },

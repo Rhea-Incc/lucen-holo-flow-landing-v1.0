@@ -6,6 +6,11 @@ export default function LucenHero() {
       <div className="absolute inset-0 z-0">
         <OptimizedVideo
           src="/media/desktop091224.mp4"
+          sources={[
+            { src: '/media/mobile101224.mp4', media: '(max-width: 767px)' },
+            { src: '/media/tablet091224.mp4', media: '(min-width: 768px) and (max-width: 1023px)' },
+            { src: '/media/desktop091224.mp4', media: '(min-width: 1024px)' },
+          ]}
           className="w-full h-full object-cover"
           style={{ filter: 'brightness(0.7) saturate(1.2)' }}
           priority

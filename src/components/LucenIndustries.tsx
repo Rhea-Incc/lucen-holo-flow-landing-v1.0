@@ -14,7 +14,7 @@ export default function LucenIndustries() {
           className="text-center mb-20"
         >
           <p className="text-sm font-display tracking-[0.3em] uppercase text-primary mb-4">Spatial Coverage</p>
-          <h2 className="font-display text-4xl sm:text-5xl font-bold tracking-tight text-foreground">
+          <h2 className="font-display text-5xl sm:text-6xl font-bold tracking-tight text-foreground">
             Industries We Transform
           </h2>
         </motion.div>
@@ -33,13 +33,13 @@ export default function LucenIndustries() {
                 to={`/industries/${ind.slug}`}
                 className="glass-panel-elevated glow-edge p-5 text-center group cursor-pointer block"
               >
-                <div className="text-2xl text-primary text-glow mb-3 group-hover:text-accent group-hover:text-glow-accent transition-all duration-500">
+                <div className="text-3xl text-primary text-glow mb-4 group-hover:text-accent group-hover:text-glow-accent transition-all duration-500">
                   {ind.icon}
                 </div>
-                <h4 className="font-display text-sm font-semibold text-foreground mb-1 group-hover:text-primary transition-colors duration-300">
+                <h4 className="font-display text-base sm:text-lg font-semibold text-foreground mb-2 group-hover:text-primary transition-colors duration-300">
                   {ind.name}
                 </h4>
-                <p className="text-muted-foreground font-body text-xs leading-relaxed">{ind.value}</p>
+                <p className="text-muted-foreground font-body text-sm leading-relaxed">{ind.value}</p>
               </Link>
             </motion.div>
           ))}
