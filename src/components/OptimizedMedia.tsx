@@ -32,6 +32,7 @@ export function OptimizedImage({ src, alt, className = '', style, priority = fal
 
 interface OptimizedVideoProps {
   src: string;
+  sources?: Array<{ src: string; media?: string; type?: string }>;
   className?: string;
   style?: React.CSSProperties;
   priority?: boolean;
@@ -39,32 +40,37 @@ interface OptimizedVideoProps {
   onEnded?: () => void;
 }
 
-export function OptimizedVideo({ src, className = '', style, priority = false, loop = true, onEnded }: OptimizedVideoProps) {
+export function OptimizedVideo({ src, sources, className = '', style, priority = false, loop = true, onEnded }: OptimizedVideoProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
     const video = videoRef.current;
     if (!video) return;
-    
-    if (priority) {
+
+    const primeVideo = () => {
       video.preload = 'auto';
+      video.load();
+      video.play().catch(() => {});
+    };
+
+    if (priority) {
+      primeVideo();
     } else {
-      video.preload = 'metadata';
+      video.preload = 'none';
       const observer = new IntersectionObserver(
         ([entry]) => {
           if (entry.isIntersecting) {
-            video.preload = 'auto';
-            video.play().catch(() => {});
+            primeVideo();
             observer.disconnect();
           }
         },
-        { rootMargin: '200px' }
+        { rootMargin: '300px' }
       );
       observer.observe(video);
       return () => observer.disconnect();
     }
-  }, [priority]);
+  }, [priority, src, sources]);
 
   return (
     <video
@@ -73,12 +79,17 @@ export function OptimizedVideo({ src, className = '', style, priority = false, l
       muted
       loop={loop}
       playsInline
-      onCanPlay={() => setLoaded(true)}
+      preload={priority ? 'auto' : 'none'}
+      onLoadedData={() => setLoaded(true)}
       onEnded={onEnded}
       className={`transition-opacity duration-500 ${loaded ? 'opacity-100' : 'opacity-0'} ${className}`}
       style={style}
     >
-      <source src={src} type="video/mp4" />
+      {sources?.length
+        ? sources.map((source) => (
+            <source key={`${source.src}-${source.media ?? 'all'}`} src={source.src} media={source.media} type={source.type ?? 'video/mp4'} />
+          ))
+        : <source src={src} type="video/mp4" />}
     </video>
   );
 }
