@@ -1,0 +1,103 @@
+import { corsHeaders } from '@supabase/supabase-js/cors'
+
+/*
+  Image optimization edge function.
+  
+  Usage: GET /optimize-image?src=<path>&w=<width>&q=<quality>&f=<format>
+  
+  - src: path in the media bucket (e.g. "real-estate-hologram.jpg")
+  - w: target width (optional, default: original)
+  - q: quality 1-100 (optional, default: 80)
+  - f: format - "webp", "avif", "jpeg", "png" (optional, auto-detect from Accept header)
+  
+  Uses Supabase Storage image transformation API.
+*/
+
+Deno.serve(async (req) => {
+  if (req.method === 'OPTIONS') {
+    return new Response('ok', { headers: corsHeaders })
+  }
+
+  try {
+    const url = new URL(req.url)
+    const src = url.searchParams.get('src')
+    
+    if (!src) {
+      return new Response(JSON.stringify({ error: 'Missing src parameter' }), {
+        status: 400,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      })
+    }
+
+    const width = url.searchParams.get('w')
+    const quality = url.searchParams.get('q') || '80'
+    let format = url.searchParams.get('f')
+
+    // Auto-detect best format from Accept header
+    if (!format) {
+      const accept = req.headers.get('accept') || ''
+      if (accept.includes('image/avif')) {
+        format = 'avif'
+      } else if (accept.includes('image/webp')) {
+        format = 'webp'
+      } else {
+        format = 'jpeg'
+      }
+    }
+
+    // Build Supabase Storage render URL with transforms
+    const supabaseUrl = Deno.env.get('SUPABASE_URL')!
+    const transformParams: string[] = []
+    
+    if (width) transformParams.push(`width=${width}`)
+    transformParams.push(`quality=${quality}`)
+    transformParams.push(`format=${format}`)
+
+    const renderUrl = `${supabaseUrl}/storage/v1/render/image/public/media/${src}?${transformParams.join('&')}`
+
+    const imageResponse = await fetch(renderUrl)
+    
+    if (!imageResponse.ok) {
+      // Fallback: serve original file directly
+      const originalUrl = `${supabaseUrl}/storage/v1/object/public/media/${src}`
+      const fallbackResponse = await fetch(originalUrl)
+      
+      if (!fallbackResponse.ok) {
+        return new Response(JSON.stringify({ error: 'Image not found' }), {
+          status: 404,
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+        })
+      }
+
+      const body = fallbackResponse.body
+      const contentType = fallbackResponse.headers.get('content-type') || 'application/octet-stream'
+      
+      return new Response(body, {
+        headers: {
+          ...corsHeaders,
+          'Content-Type': contentType,
+          'Cache-Control': 'public, max-age=31536000, immutable',
+          'CDN-Cache-Control': 'public, max-age=31536000',
+        },
+      })
+    }
+
+    const body = imageResponse.body
+    const contentType = imageResponse.headers.get('content-type') || `image/${format}`
+
+    return new Response(body, {
+      headers: {
+        ...corsHeaders,
+        'Content-Type': contentType,
+        'Cache-Control': 'public, max-age=31536000, immutable',
+        'CDN-Cache-Control': 'public, max-age=31536000',
+        'Vary': 'Accept',
+      },
+    })
+  } catch (error) {
+    return new Response(JSON.stringify({ error: 'Internal server error' }), {
+      status: 500,
+      headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+    })
+  }
+})
