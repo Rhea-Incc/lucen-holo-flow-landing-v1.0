@@ -1,8 +1,17 @@
 import { useState, useRef, useEffect } from 'react';
-import { cdnUrl } from '@/lib/media';
+import { cdnUrl, optimizedImageUrl, isImagePath } from '@/lib/media';
 
 /** Resolve a media path: if it starts with /media/, use CDN; otherwise pass through */
 function resolveUrl(src: string): string {
+  if (src.startsWith('/media/')) return cdnUrl(src);
+  return src;
+}
+
+/** Resolve an image path with WebP/AVIF auto-detection via edge function */
+function resolveImageUrl(src: string, width?: number): string {
+  if (src.startsWith('/media/') && isImagePath(src)) {
+    return optimizedImageUrl(src, { width, quality: 80 });
+  }
   if (src.startsWith('/media/')) return cdnUrl(src);
   return src;
 }
@@ -13,19 +22,34 @@ interface OptimizedImageProps {
   className?: string;
   style?: React.CSSProperties;
   priority?: boolean;
+  width?: number;
 }
 
-export function OptimizedImage({ src, alt, className = '', style, priority = false }: OptimizedImageProps) {
-  const resolvedSrc = resolveUrl(src);
+export function OptimizedImage({ src, alt, className = '', style, priority = false, width }: OptimizedImageProps) {
+  const resolvedSrc = resolveImageUrl(src, width);
   const [loaded, setLoaded] = useState(false);
-  const imgRef = useRef<HTMLImageElement>(null);
+  const [inView, setInView] = useState(priority);
+  const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (imgRef.current?.complete) {
-      setLoaded(true);
-      return;
-    }
+    if (priority) return;
+    const el = containerRef.current;
+    if (!el) return;
 
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setInView(true);
+          observer.disconnect();
+        }
+      },
+      { rootMargin: '600px' }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [priority]);
+
+  useEffect(() => {
     if (priority) {
       const link = document.createElement('link');
       link.rel = 'preload';
@@ -34,36 +58,22 @@ export function OptimizedImage({ src, alt, className = '', style, priority = fal
       document.head.appendChild(link);
       return () => { document.head.removeChild(link); };
     }
-
-    const img = imgRef.current;
-    if (!img) return;
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          img.src = resolvedSrc;
-          observer.disconnect();
-        }
-      },
-      { rootMargin: '500px' }
-    );
-    img.removeAttribute('src');
-    observer.observe(img);
-    return () => observer.disconnect();
   }, [resolvedSrc, priority]);
 
   return (
-    <img
-      ref={imgRef}
-      src={priority ? resolvedSrc : undefined}
-      alt={alt}
-      loading={priority ? 'eager' : 'lazy'}
-      decoding="async"
-      fetchPriority={priority ? 'high' : 'auto'}
-      onLoad={() => setLoaded(true)}
-      className={`transition-opacity duration-300 ${loaded ? 'opacity-100' : 'opacity-0'} ${className}`}
-      style={style}
-    />
+    <div ref={containerRef} className={`${className}`} style={style}>
+      {inView && (
+        <img
+          src={resolvedSrc}
+          alt={alt}
+          loading={priority ? 'eager' : 'lazy'}
+          decoding="async"
+          fetchPriority={priority ? 'high' : 'auto'}
+          onLoad={() => setLoaded(true)}
+          className={`w-full h-full object-cover transition-opacity duration-300 ${loaded ? 'opacity-100' : 'opacity-0'}`}
+        />
+      )}
+    </div>
   );
 }
 
@@ -100,7 +110,7 @@ export function OptimizedVideo({ src, sources, className = '', style, priority =
       video.preload = 'auto';
       playVideo();
     } else {
-      video.preload = 'metadata';
+      video.preload = 'none';
       const observer = new IntersectionObserver(
         ([entry]) => {
           if (entry.isIntersecting) {
@@ -108,12 +118,12 @@ export function OptimizedVideo({ src, sources, className = '', style, priority =
             observer.disconnect();
           }
         },
-        { rootMargin: '600px' }
+        { rootMargin: '800px' }
       );
       observer.observe(video);
       return () => observer.disconnect();
     }
-  }, [priority, resolvedSrc, resolvedSources]);
+  }, [priority, resolvedSrc]);
 
   return (
     <video
@@ -123,7 +133,7 @@ export function OptimizedVideo({ src, sources, className = '', style, priority =
       loop={loop}
       playsInline
       poster={resolvedPoster}
-      preload={priority ? 'auto' : 'metadata'}
+      preload={priority ? 'auto' : 'none'}
       onCanPlay={() => setLoaded(true)}
       onEnded={onEnded}
       className={`transition-opacity duration-300 ${loaded ? 'opacity-100' : 'opacity-0'} ${className}`}
