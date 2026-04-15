@@ -1,13 +1,11 @@
 import { useState, useRef, useEffect } from 'react';
 import { cdnUrl, optimizedImageUrl, isImagePath } from '@/lib/media';
 
-/** Resolve a media path: if it starts with /media/, use CDN; otherwise pass through */
 function resolveUrl(src: string): string {
   if (src.startsWith('/media/')) return cdnUrl(src);
   return src;
 }
 
-/** Resolve an image path with WebP/AVIF auto-detection via edge function */
 function resolveImageUrl(src: string, width?: number): string {
   if (src.startsWith('/media/') && isImagePath(src)) {
     return optimizedImageUrl(src, { width, quality: 80 });
@@ -16,6 +14,16 @@ function resolveImageUrl(src: string, width?: number): string {
   return src;
 }
 
+/** Generate srcSet for responsive images */
+function buildSrcSet(src: string, widths: number[]): string | undefined {
+  if (!src.startsWith('/media/') || !isImagePath(src)) return undefined;
+  return widths
+    .map(w => `${optimizedImageUrl(src, { width: w, quality: 80 })} ${w}w`)
+    .join(', ');
+}
+
+const RESPONSIVE_WIDTHS = [320, 640, 960, 1280, 1920];
+
 interface OptimizedImageProps {
   src: string;
   alt: string;
@@ -23,10 +31,13 @@ interface OptimizedImageProps {
   style?: React.CSSProperties;
   priority?: boolean;
   width?: number;
+  sizes?: string;
 }
 
-export function OptimizedImage({ src, alt, className = '', style, priority = false, width }: OptimizedImageProps) {
-  const resolvedSrc = resolveImageUrl(src, width);
+export function OptimizedImage({ src, alt, className = '', style, priority = false, width, sizes }: OptimizedImageProps) {
+  const resolvedSrc = resolveImageUrl(src, width || 1280);
+  const srcSet = buildSrcSet(src, RESPONSIVE_WIDTHS);
+  const defaultSizes = sizes || '(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw';
   const [loaded, setLoaded] = useState(false);
   const [inView, setInView] = useState(priority);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -35,14 +46,8 @@ export function OptimizedImage({ src, alt, className = '', style, priority = fal
     if (priority) return;
     const el = containerRef.current;
     if (!el) return;
-
     const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setInView(true);
-          observer.disconnect();
-        }
-      },
+      ([entry]) => { if (entry.isIntersecting) { setInView(true); observer.disconnect(); } },
       { rootMargin: '600px' }
     );
     observer.observe(el);
@@ -55,16 +60,19 @@ export function OptimizedImage({ src, alt, className = '', style, priority = fal
       link.rel = 'preload';
       link.as = 'image';
       link.href = resolvedSrc;
+      if (srcSet) { link.setAttribute('imagesrcset', srcSet); link.setAttribute('imagesizes', defaultSizes); }
       document.head.appendChild(link);
       return () => { document.head.removeChild(link); };
     }
-  }, [resolvedSrc, priority]);
+  }, [resolvedSrc, priority, srcSet, defaultSizes]);
 
   return (
-    <div ref={containerRef} className={`${className}`} style={style}>
+    <div ref={containerRef} className={className} style={style}>
       {inView && (
         <img
           src={resolvedSrc}
+          srcSet={srcSet}
+          sizes={defaultSizes}
           alt={alt}
           loading={priority ? 'eager' : 'lazy'}
           decoding="async"
@@ -112,12 +120,7 @@ export function OptimizedVideo({ src, sources, className = '', style, priority =
     } else {
       video.preload = 'none';
       const observer = new IntersectionObserver(
-        ([entry]) => {
-          if (entry.isIntersecting) {
-            playVideo();
-            observer.disconnect();
-          }
-        },
+        ([entry]) => { if (entry.isIntersecting) { playVideo(); observer.disconnect(); } },
         { rootMargin: '800px' }
       );
       observer.observe(video);
