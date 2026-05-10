@@ -59,16 +59,26 @@ export function cdnUrl(path: string): string {
   return `${STORAGE_BASE}/${clean}`;
 }
 
-/** Optimized image URL via edge function (resize + format) */
+/** Optimized image URL via edge function (resize + format).
+ *  When `respectNetwork` is true (default), width and quality are clamped
+ *  by the current connection profile so we never blow the per-image budget.
+ */
 export function optimizedImageUrl(
   path: string,
-  options?: { width?: number; quality?: number; format?: ImageFormat }
+  options?: { width?: number; quality?: number; format?: ImageFormat; respectNetwork?: boolean }
 ): string {
   const clean = path.replace(/^\/media\//, '').replace(/^\//, '');
   const format = options?.format ?? bestImageFormat();
-  const quality = options?.quality ?? QUALITY_DEFAULTS[format];
+  const baseQuality = options?.quality ?? QUALITY_DEFAULTS[format];
+  const respect = options?.respectNetwork !== false;
+  const profile = respect ? networkProfile() : null;
+
+  const quality = profile ? clampQuality(baseQuality, profile) : baseQuality;
   const params = new URLSearchParams({ src: clean, q: String(quality), f: format });
-  if (options?.width) params.set('w', String(Math.round(options.width)));
+  if (options?.width) {
+    const w = profile ? clampWidth(options.width, profile) : Math.round(options.width);
+    params.set('w', String(w));
+  }
   return `${FUNCTION_BASE}?${params.toString()}`;
 }
 
