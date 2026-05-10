@@ -58,7 +58,27 @@ Deno.serve(async (req) => {
 
     const renderUrl = `${supabaseUrl}/storage/v1/render/image/public/media/${src}?${transformParams.join('&')}`
 
-    const imageResponse = await fetch(renderUrl)
+    // Forward conditional headers so the upstream can answer 304
+    const upstreamHeaders: HeadersInit = {}
+    const ifNoneMatch = req.headers.get('if-none-match')
+    const ifModifiedSince = req.headers.get('if-modified-since')
+    if (ifNoneMatch) upstreamHeaders['If-None-Match'] = ifNoneMatch
+    if (ifModifiedSince) upstreamHeaders['If-Modified-Since'] = ifModifiedSince
+
+    const imageResponse = await fetch(renderUrl, { headers: upstreamHeaders })
+
+    if (imageResponse.status === 304) {
+      return new Response(null, {
+        status: 304,
+        headers: {
+          ...corsHeaders,
+          'Cache-Control': 'public, max-age=31536000, immutable',
+          'ETag': imageResponse.headers.get('etag') ?? '',
+          'Last-Modified': imageResponse.headers.get('last-modified') ?? '',
+          'Vary': 'Accept',
+        },
+      })
+    }
     
     if (!imageResponse.ok) {
       // Fallback: serve original file directly
@@ -87,16 +107,20 @@ Deno.serve(async (req) => {
 
     const body = imageResponse.body
     const contentType = imageResponse.headers.get('content-type') || `image/${format}`
+    const etag = imageResponse.headers.get('etag')
+    const lastModified = imageResponse.headers.get('last-modified')
 
-    return new Response(body, {
-      headers: {
-        ...corsHeaders,
-        'Content-Type': contentType,
-        'Cache-Control': 'public, max-age=31536000, immutable',
-        'CDN-Cache-Control': 'public, max-age=31536000',
-        'Vary': 'Accept',
-      },
-    })
+    const headers: Record<string, string> = {
+      ...corsHeaders,
+      'Content-Type': contentType,
+      'Cache-Control': 'public, max-age=31536000, immutable',
+      'CDN-Cache-Control': 'public, max-age=31536000',
+      'Vary': 'Accept',
+    }
+    if (etag) headers['ETag'] = etag
+    if (lastModified) headers['Last-Modified'] = lastModified
+
+    return new Response(body, { headers })
   } catch (error) {
     return new Response(JSON.stringify({ error: 'Internal server error' }), {
       status: 500,
