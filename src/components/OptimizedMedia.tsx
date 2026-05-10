@@ -43,8 +43,10 @@ export function OptimizedImage({
   }, [priority, inView]);
 
   const defaultSizes = sizes || '(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw';
+  const dpr = effectiveDpr();
+  const fallbackWidth = Math.min(2560, (width || 1280) * dpr);
   const fallbackSrc = isCloudImage
-    ? optimizedImageUrl(src, { width: width || 1280, format: 'jpeg' })
+    ? optimizedImageUrl(src, { width: fallbackWidth, format: 'jpeg' })
     : resolveUrl(src);
   const avifSet = isCloudImage ? buildSrcSetFor(src, RESPONSIVE_WIDTHS, 'avif') : undefined;
   const webpSet = isCloudImage ? buildSrcSetFor(src, RESPONSIVE_WIDTHS, 'webp') : undefined;
