@@ -3,6 +3,8 @@
  * All media served from Lovable Cloud storage with edge caching + on-the-fly transforms.
  */
 
+import { networkProfile, clampQuality, clampWidth } from './network';
+
 const STORAGE_BASE = `${import.meta.env.VITE_SUPABASE_URL}/storage/v1/object/public/media`;
 const FUNCTION_BASE = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/optimize-image`;
 
