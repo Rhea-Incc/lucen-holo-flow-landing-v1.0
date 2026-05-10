@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
-import { cdnUrl, optimizedImageUrl, isImagePath, buildSrcSetFor, avifReady } from '@/lib/media';
+import { cdnUrl, optimizedImageUrl, isImagePath, buildSrcSetFor, avifReady, effectiveDpr } from '@/lib/media';
 
-const RESPONSIVE_WIDTHS = [320, 480, 640, 960, 1280, 1600, 1920];
+const RESPONSIVE_WIDTHS = [320, 480, 640, 828, 1080, 1280, 1600, 1920, 2560];
 
 function resolveUrl(src: string): string {
   return src.startsWith('/media/') ? cdnUrl(src) : src;
