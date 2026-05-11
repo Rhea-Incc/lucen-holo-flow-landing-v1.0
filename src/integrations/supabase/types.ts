@@ -77,6 +77,45 @@ export type Database = {
         }
         Relationships: []
       }
+      engine_events: {
+        Row: {
+          created_at: string
+          event_type: string
+          id: string
+          integration_slug: string | null
+          metadata: Json | null
+          path: string | null
+          referrer: string | null
+          session_id: string | null
+          source: string | null
+          user_agent: string | null
+        }
+        Insert: {
+          created_at?: string
+          event_type: string
+          id?: string
+          integration_slug?: string | null
+          metadata?: Json | null
+          path?: string | null
+          referrer?: string | null
+          session_id?: string | null
+          source?: string | null
+          user_agent?: string | null
+        }
+        Update: {
+          created_at?: string
+          event_type?: string
+          id?: string
+          integration_slug?: string | null
+          metadata?: Json | null
+          path?: string | null
+          referrer?: string | null
+          session_id?: string | null
+          source?: string | null
+          user_agent?: string | null
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
