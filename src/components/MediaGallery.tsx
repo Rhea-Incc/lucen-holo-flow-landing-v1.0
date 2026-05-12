@@ -58,7 +58,7 @@ export default function MediaGallery({ images, videos, title }: MediaGalleryProp
       </div>
 
       {allMedia.length > 1 && (
-        <></>
+        <>
           <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-2 z-10">
             {allMedia.map((_, i) => (
               <button
