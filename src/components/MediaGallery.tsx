@@ -27,7 +27,7 @@ export default function MediaGallery({ images, videos, title }: MediaGalleryProp
       // Video: listen for ended event (handled via onEnded prop)
       return;
     }
-    const timer = setTimeout(next, 6000);
+    const timer = setTimeout(next, 5000);
     return () => clearTimeout(timer);
   }, [next, allMedia.length, current, allMedia]);
 
@@ -36,7 +36,7 @@ export default function MediaGallery({ images, videos, title }: MediaGalleryProp
   const item = allMedia[current];
 
   return (
-    <div className="relative w-full overflow-hidden rounded-lg">
+    <div className="relative w-full overflow-hidden rounded-lg bg-black/60">
       <div className="relative aspect-video md:aspect-[16/9] w-full">
         <AnimatePresence mode="wait">
           <motion.div
@@ -45,16 +45,16 @@ export default function MediaGallery({ images, videos, title }: MediaGalleryProp
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.5 }}
-            className="absolute inset-0"
+            className="absolute inset-0 flex items-center justify-center"
           >
             {item.type === 'video' ? (
-              <OptimizedVideo src={item.src} className="w-full h-full object-cover" priority loop={allMedia.length <= 1} onEnded={allMedia.length > 1 ? next : undefined} />
+              <OptimizedVideo src={item.src} className="w-full h-full object-contain" priority loop={allMedia.length <= 1} onEnded={allMedia.length > 1 ? next : undefined} />
             ) : (
-              <OptimizedImage src={item.src} alt={title} className="w-full h-full object-cover" priority />
+              <OptimizedImage src={item.src} alt={title} className="w-full h-full [&_img]:object-contain" priority />
             )}
           </motion.div>
         </AnimatePresence>
-        <div className="absolute inset-0 bg-gradient-to-t from-background/60 to-transparent pointer-events-none" />
+        <div className="absolute inset-0 bg-gradient-to-t from-background/40 to-transparent pointer-events-none" />
       </div>
 
       {allMedia.length > 1 && (
