@@ -58,21 +58,7 @@ export default function MediaGallery({ images, videos, title }: MediaGalleryProp
       </div>
 
       {allMedia.length > 1 && (
-        <>
-          <button
-            onClick={prev}
-            className="absolute left-3 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full glass-panel-elevated flex items-center justify-center text-foreground hover:text-primary transition-colors z-10"
-            aria-label="Previous"
-          >
-            ‹
-          </button>
-          <button
-            onClick={next}
-            className="absolute right-3 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full glass-panel-elevated flex items-center justify-center text-foreground hover:text-primary transition-colors z-10"
-            aria-label="Next"
-          >
-            ›
-          </button>
+        <></>
           <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-2 z-10">
             {allMedia.map((_, i) => (
               <button
