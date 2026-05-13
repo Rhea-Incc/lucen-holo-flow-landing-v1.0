@@ -5,6 +5,7 @@ import MediaGallery from '@/components/MediaGallery';
 import LucenHeader from '@/components/LucenHeader';
 import ParticleField from '@/components/ParticleField';
 import CursorGlow from '@/components/CursorGlow';
+import Seo from '@/components/Seo';
 
 export default function IndustryPage() {
   const { slug } = useParams<{ slug: string }>();
@@ -24,6 +25,11 @@ export default function IndustryPage() {
 
   return (
     <div className="relative min-h-screen">
+      <Seo
+        title={`${industry.name} — Lucen Holographic Solutions`}
+        description={industry.description.slice(0, 155)}
+        path={`/industries/${industry.slug}`}
+      />
       <ParticleField />
       <CursorGlow />
       <LucenHeader />

@@ -1,3 +1,4 @@
+import Seo from '@/components/Seo';
 import ParticleField from '@/components/ParticleField';
 import CursorGlow from '@/components/CursorGlow';
 import LucenHeader from '@/components/LucenHeader';
@@ -19,6 +20,11 @@ import ScrollSection from '@/components/ScrollSection';
 const Index = () => {
   return (
     <div className="relative min-h-screen">
+      <Seo
+        title="Lucen — Holographic Interface System"
+        description="Lucen is a real-time holographic interface where media, motion, and light form a continuous intelligent system for retail, real estate, automotive, and DOOH."
+        path="/"
+      />
       <ParticleField />
       <CursorGlow />
       <LucenHeader />

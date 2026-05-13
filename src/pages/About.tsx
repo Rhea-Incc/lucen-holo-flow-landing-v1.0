@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
 import LucenHeader from '@/components/LucenHeader';
+import Seo from '@/components/Seo';
 import ParticleField from '@/components/ParticleField';
 import CursorGlow from '@/components/CursorGlow';
 import WhatsAppButton from '@/components/WhatsAppButton';
@@ -23,6 +24,11 @@ const fadeUp = {
 export default function About() {
   return (
     <div className="relative min-h-screen">
+      <Seo
+        title="About Lucen — The Future of Physical Media"
+        description="Meet Lucen: the team building the holographic interface system and Lucen Engine analytics platform powering immersive brand experiences worldwide."
+        path="/about"
+      />
       <ParticleField />
       <CursorGlow />
       <LucenHeader />

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url><loc>https://lucen-holo-flow.lovable.app/</loc><changefreq>weekly</changefreq><priority>1.0</priority></url>
+  <url><loc>https://lucen-holo-flow.lovable.app/about</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://lucen-holo-flow.lovable.app/services</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://lucen-holo-flow.lovable.app/industries</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://lucen-holo-flow.lovable.app/contact</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://lucen-holo-flow.lovable.app/get-started</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://lucen-holo-flow.lovable.app/industries/retail-luxury</loc><priority>0.7</priority></url>
+  <url><loc>https://lucen-holo-flow.lovable.app/industries/real-estate</loc><priority>0.7</priority></url>
+  <url><loc>https://lucen-holo-flow.lovable.app/industries/automotive</loc><priority>0.7</priority></url>
+  <url><loc>https://lucen-holo-flow.lovable.app/industries/universities</loc><priority>0.7</priority></url>
+  <url><loc>https://lucen-holo-flow.lovable.app/industries/telecom</loc><priority>0.7</priority></url>
+  <url><loc>https://lucen-holo-flow.lovable.app/industries/banking</loc><priority>0.7</priority></url>
+  <url><loc>https://lucen-holo-flow.lovable.app/industries/airports-malls</loc><priority>0.7</priority></url>
+  <url><loc>https://lucen-holo-flow.lovable.app/industries/healthcare</loc><priority>0.7</priority></url>
+  <url><loc>https://lucen-holo-flow.lovable.app/industries/events-exhibitions</loc><priority>0.7</priority></url>
+  <url><loc>https://lucen-holo-flow.lovable.app/industries/industrial</loc><priority>0.7</priority></url>
+  <url><loc>https://lucen-holo-flow.lovable.app/industries/airlines</loc><priority>0.7</priority></url>
+  <url><loc>https://lucen-holo-flow.lovable.app/use-cases/retail-product-launch</loc><priority>0.6</priority></url>
+  <url><loc>https://lucen-holo-flow.lovable.app/use-cases/real-estate-sales-center</loc><priority>0.6</priority></url>
+  <url><loc>https://lucen-holo-flow.lovable.app/use-cases/automotive-showroom</loc><priority>0.6</priority></url>
+  <url><loc>https://lucen-holo-flow.lovable.app/use-cases/trade-show-booth</loc><priority>0.6</priority></url>
+  <url><loc>https://lucen-holo-flow.lovable.app/use-cases/events</loc><priority>0.6</priority></url>
+  <url><loc>https://lucen-holo-flow.lovable.app/use-cases/mall-advertising-network</loc><priority>0.6</priority></url>
+  <url><loc>https://lucen-holo-flow.lovable.app/use-cases/airport-brand-campaigns</loc><priority>0.6</priority></url>
+  <url><loc>https://lucen-holo-flow.lovable.app/use-cases/corporate-lobby</loc><priority>0.6</priority></url>
+  <url><loc>https://lucen-holo-flow.lovable.app/use-cases/airline-experience</loc><priority>0.6</priority></url>
+  <url><loc>https://lucen-holo-flow.lovable.app/integrations/hardware-purchase</loc><priority>0.7</priority></url>
+  <url><loc>https://lucen-holo-flow.lovable.app/integrations/long-term-rentals</loc><priority>0.7</priority></url>
+  <url><loc>https://lucen-holo-flow.lovable.app/integrations/short-term-rentals</loc><priority>0.7</priority></url>
+  <url><loc>https://lucen-holo-flow.lovable.app/integrations/lucen-engine-dooh</loc><priority>0.7</priority></url>
+  <url><loc>https://lucen-holo-flow.lovable.app/integrations/campaign-deployments</loc><priority>0.7</priority></url>
+  <url><loc>https://lucen-holo-flow.lovable.app/integrations/product-activations</loc><priority>0.7</priority></url>
+</urlset>

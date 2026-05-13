@@ -3,6 +3,7 @@ import { Link, useParams } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { ArrowLeft, ArrowRight, Check } from 'lucide-react';
 import LucenHeader from '@/components/LucenHeader';
+import Seo from '@/components/Seo';
 import ParticleField from '@/components/ParticleField';
 import CursorGlow from '@/components/CursorGlow';
 import NotFound from '@/pages/NotFound';
@@ -22,7 +23,7 @@ export default function IntegrationPage() {
         integration_slug: integration.slug,
         source: 'integration_detail',
       });
-      document.title = `${integration.title} · Lucen Engine`;
+      document.title = `${integration.title} — Lucen Engine Integration`;
     }
   }, [integration]);
 
@@ -41,6 +42,11 @@ export default function IntegrationPage() {
 
   return (
     <div className="relative min-h-screen">
+      <Seo
+        title={`${integration.title} — Lucen Engine Integration`}
+        description={integration.shortDesc.slice(0, 155)}
+        path={`/integrations/${integration.slug}`}
+      />
       <ParticleField />
       <CursorGlow />
       <LucenHeader />

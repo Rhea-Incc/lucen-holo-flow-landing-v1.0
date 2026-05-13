@@ -3,12 +3,18 @@ import { Link } from 'react-router-dom';
 import LucenHeader from '@/components/LucenHeader';
 import ParticleField from '@/components/ParticleField';
 import CursorGlow from '@/components/CursorGlow';
+import Seo from '@/components/Seo';
 import { industries } from '@/data/industries';
 import { OptimizedImage } from '@/components/OptimizedMedia';
 
 export default function IndustriesIndex() {
   return (
     <div className="relative min-h-screen">
+      <Seo
+        title="Industries — Lucen Holographic Deployments"
+        description="Retail, real estate, automotive, banking, healthcare, airports, events — see how Lucen transforms every industry with holographic media."
+        path="/industries"
+      />
       <ParticleField />
       <CursorGlow />
       <LucenHeader />

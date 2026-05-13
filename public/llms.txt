@@ -1,0 +1,26 @@
+# Lucen
+
+> Lucen is a real-time holographic interface system where media, motion, and light form a continuous intelligent display network for retail, real estate, automotive, events, and DOOH.
+
+## Pages
+
+- [Home](/): Overview of the Lucen holographic interface system.
+- [About](/about): The company, vision, and the Lucen Engine platform.
+- [Services](/services): Holographic offerings, pipeline, and capabilities.
+- [Industries](/industries): Industries Lucen transforms with holographic media.
+- [Contact](/contact): Get in touch with the Lucen team.
+- [Get Started](/get-started): Request a demo or scoping conversation.
+
+## Integrations
+
+- [Hardware Purchase](/integrations/hardware-purchase): Own the Lucen holographic stack outright.
+- [Long-Term Rentals](/integrations/long-term-rentals): Operate Lucen as a managed opex line.
+- [Short-Term Rentals](/integrations/short-term-rentals): Activate Lucen for events and campaigns.
+- [Lucen Engine for DOOH](/integrations/lucen-engine-dooh): Add Lucen Engine analytics to existing DOOH networks.
+- [Campaign Deployments](/integrations/campaign-deployments): Run holographic campaigns across the Lucen network.
+- [Product Activations](/integrations/product-activations): Launch products with holographic activations.
+
+## Optional
+
+- [Industries Index](/industries): Full list of industry pages, each at /industries/{slug}.
+- [Use Cases](/use-cases/retail-product-launch): Representative use case; full set lives at /use-cases/{slug}.

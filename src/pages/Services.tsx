@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
+import Seo from '@/components/Seo';
 import LucenHeader from '@/components/LucenHeader';
 import ParticleField from '@/components/ParticleField';
 import CursorGlow from '@/components/CursorGlow';
@@ -35,6 +36,11 @@ const offerings = [
 export default function Services() {
   return (
     <div className="relative min-h-screen">
+      <Seo
+        title="Services — Lucen Holographic Systems"
+        description="Holographic displays, 3D simulation environments, campaign deployments, and Lucen Engine analytics — explore the full Lucen service stack."
+        path="/services"
+      />
       <ParticleField />
       <CursorGlow />
       <LucenHeader />

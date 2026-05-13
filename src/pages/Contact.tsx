@@ -3,6 +3,7 @@ import { useState } from 'react';
 import LucenHeader from '@/components/LucenHeader';
 import ParticleField from '@/components/ParticleField';
 import CursorGlow from '@/components/CursorGlow';
+import Seo from '@/components/Seo';
 import WhatsAppButton from '@/components/WhatsAppButton';
 import { Phone, MessageCircle, PhoneCall, Loader2, CheckCircle } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
@@ -60,6 +61,11 @@ export default function Contact() {
 
   return (
     <div className="relative min-h-screen">
+      <Seo
+        title="Contact Lucen — Talk to a Holographic Specialist"
+        description="Reach the Lucen team to scope a holographic deployment, request a demo, or schedule a callback with a specialist."
+        path="/contact"
+      />
       <ParticleField />
       <CursorGlow />
       <LucenHeader />
