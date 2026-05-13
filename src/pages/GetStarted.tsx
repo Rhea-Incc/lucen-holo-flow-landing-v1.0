@@ -2,10 +2,16 @@ import { motion } from 'framer-motion';
 import LucenHeader from '@/components/LucenHeader';
 import ParticleField from '@/components/ParticleField';
 import CursorGlow from '@/components/CursorGlow';
+import Seo from '@/components/Seo';
 
 export default function GetStarted() {
   return (
     <div className="relative min-h-screen">
+      <Seo
+        title="Get Started with Lucen — Request a Demo"
+        description="Tell us about your space and goals. A Lucen specialist will design your holographic experience and respond within one business day."
+        path="/get-started"
+      />
       <ParticleField />
       <CursorGlow />
       <LucenHeader />
