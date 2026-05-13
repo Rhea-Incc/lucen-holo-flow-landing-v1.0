@@ -85,6 +85,7 @@ export const useCases: UseCase[] = [
     slug: 'corporate-lobby',
     title: 'Corporate Lobby Installation',
     image: '/media/corporate_lobby.jpg',
+    homeVideo: '/media/corporate_lobby-2.mp4',
     images: ['/media/corporate_lobby.jpg'],
     videos: ['/media/corporate_lobby-2.mp4', '/media/corporate_lobby.mp4', '/media/Track-overlay_1.mp4'],
     description: 'Transform corporate lobbies into brand showcases with holographic installations that impress visitors and reinforce brand identity.',
