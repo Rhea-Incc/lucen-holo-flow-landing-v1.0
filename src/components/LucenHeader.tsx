@@ -30,7 +30,7 @@ export default function LucenHeader() {
         {/* Logo + Name */}
         <Link to="/" className="flex items-center gap-3 group">
           <img
-            src="/media/Lucene-logo.png"
+            src="/media/lucen-logo-2026.png"
             alt="Lucen"
             className="w-8 h-8 object-contain"
             style={{ filter: 'drop-shadow(0 0 12px hsl(192 95% 60% / 0.4))' }}

@@ -2,6 +2,10 @@ export interface UseCase {
   slug: string;
   title: string;
   image: string;
+  /** Optional desktop-only hero image (e.g. landscape variant). */
+  imageDesktop?: string;
+  /** Optional video to use as the homepage tile media (preferred over image when set). */
+  homeVideo?: string;
   images: string[];
   videos: string[];
   description: string;
@@ -24,16 +28,17 @@ export const useCases: UseCase[] = [
     slug: 'real-estate-sales-center',
     title: 'Real Estate Sales Center',
     image: '/media/hologram-for-real-estate.jpg',
+    imageDesktop: '/media/real-estate-hologram.jpg',
     images: ['/media/hologram-for-real-estate.jpg', '/media/real-estate-hologram.jpg', '/media/real-estate-hologram-2.jpg'],
     videos: ['/media/real-estate-vid.mp4', '/media/4.mp4'],
     description: 'Convert sales centers into immersive visualization experiences where buyers walk through unbuilt properties and explore entire developments.',
     highlights: ['3D property walkthroughs', 'Interactive floor plans', 'Neighborhood visualization', 'Buyer engagement tracking'],
-    imageFit: 'contain',
   },
   {
     slug: 'automotive-showroom',
     title: 'Automotive Showroom',
-    image: '/media/auto-4.png',
+    image: '/media/auto-showroom_holo-3.jpg',
+    homeVideo: '/media/demo-2.mp4',
     images: ['/media/auto-4.png', '/media/auto-showroom_holo-3.jpg', '/media/auto-showroom_holo-2.jpg', '/media/auto-showroom-2.jpg', '/media/auto-showroom-holo.jpg'],
     videos: ['/media/demo-2.mp4', '/media/autoshowroom_vid-2.mp4'],
     description: 'Bring vehicles to life with holographic displays that showcase every angle, feature, and configuration possibility.',
@@ -43,6 +48,7 @@ export const useCases: UseCase[] = [
     slug: 'trade-show-booth',
     title: 'Trade Show Immersive Booth',
     image: '/media/events-hologram.jpg',
+    homeVideo: '/media/2-3.mp4',
     images: ['/media/gizmo-holograms-events-3_1440x900.jpg'],
     videos: ['/media/2-3.mp4', '/media/2-2.mp4', '/media/exhibitions.mp4'],
     description: 'Stand out at trade shows with holographic installations that draw crowds and create unforgettable brand impressions.',
@@ -51,7 +57,7 @@ export const useCases: UseCase[] = [
   {
     slug: 'events',
     title: 'Events & Live Productions',
-    image: '/media/hospitality.jpg',
+    image: '/media/Events-2.jpg',
     images: ['/media/hospitality.jpg', '/media/Events-2.jpg'],
     videos: [],
     description: 'Elevate concerts, galas, festivals and live productions with show-stopping volumetric holograms that transform venues into immersive worlds.',
@@ -79,6 +85,7 @@ export const useCases: UseCase[] = [
     slug: 'corporate-lobby',
     title: 'Corporate Lobby Installation',
     image: '/media/corporate_lobby.jpg',
+    homeVideo: '/media/corporate_lobby-2.mp4',
     images: ['/media/corporate_lobby.jpg'],
     videos: ['/media/corporate_lobby-2.mp4', '/media/corporate_lobby.mp4', '/media/Track-overlay_1.mp4'],
     description: 'Transform corporate lobbies into brand showcases with holographic installations that impress visitors and reinforce brand identity.',

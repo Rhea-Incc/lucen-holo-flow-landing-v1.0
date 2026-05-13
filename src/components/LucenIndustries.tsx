@@ -19,30 +19,37 @@ export default function LucenIndustries() {
           </h2>
         </motion.div>
 
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
-          {industries.map((ind, i) => (
-            <motion.div
-              key={ind.slug}
-              initial={{ opacity: 0, y: 30, filter: 'blur(15px)' }}
-              whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
-              viewport={{ once: true, margin: '-30px' }}
-              transition={{ duration: 0.6, delay: i * 0.05, ease: [0.16, 1, 0.3, 1] }}
-              whileHover={{ y: -6, boxShadow: '0 0 30px -8px hsl(192 95% 60% / 0.2)' }}
-            >
-              <Link
-                to={`/industries/${ind.slug}`}
-                className="glass-panel-elevated glow-edge p-5 text-center group cursor-pointer block"
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 items-start">
+          {industries.map((ind, i) => {
+            // Subtle staggered offset per column for an organic, masonry feel.
+            // Pattern repeats every 4 tiles; disabled on smallest screens to keep symmetry.
+            const offsets = ['sm:translate-y-0', 'sm:translate-y-6', 'sm:translate-y-12', 'sm:translate-y-3'];
+            const offset = offsets[i % offsets.length];
+            return (
+              <motion.div
+                key={ind.slug}
+                initial={{ opacity: 0, y: 30, filter: 'blur(15px)' }}
+                whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+                viewport={{ once: true, margin: '-30px' }}
+                transition={{ duration: 0.6, delay: i * 0.05, ease: [0.16, 1, 0.3, 1] }}
+                whileHover={{ y: -6, boxShadow: '0 0 30px -8px hsl(192 95% 60% / 0.2)' }}
+                className={`transform ${offset}`}
               >
-                <div className="text-3xl text-primary text-glow mb-4 group-hover:text-accent group-hover:text-glow-accent transition-all duration-500">
-                  {ind.icon}
-                </div>
-                <h4 className="font-display text-base sm:text-lg font-semibold text-foreground mb-2 group-hover:text-primary transition-colors duration-300">
-                  {ind.name}
-                </h4>
-                <p className="text-muted-foreground font-body text-sm leading-relaxed">{ind.value}</p>
-              </Link>
-            </motion.div>
-          ))}
+                <Link
+                  to={`/industries/${ind.slug}`}
+                  className="glass-panel-elevated glow-edge p-5 text-center group cursor-pointer block h-full"
+                >
+                  <div className="text-3xl text-primary text-glow mb-4 group-hover:text-accent group-hover:text-glow-accent transition-all duration-500">
+                    {ind.icon}
+                  </div>
+                  <h4 className="font-display text-base sm:text-lg font-semibold text-foreground mb-2 group-hover:text-primary transition-colors duration-300">
+                    {ind.name}
+                  </h4>
+                  <p className="text-muted-foreground font-body text-sm leading-relaxed">{ind.value}</p>
+                </Link>
+              </motion.div>
+            );
+          })}
         </div>
       </div>
     </section>
