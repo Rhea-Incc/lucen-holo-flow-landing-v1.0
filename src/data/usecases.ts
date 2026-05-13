@@ -37,7 +37,8 @@ export const useCases: UseCase[] = [
   {
     slug: 'automotive-showroom',
     title: 'Automotive Showroom',
-    image: '/media/auto-4.png',
+    image: '/media/auto-showroom_holo-3.jpg',
+    homeVideo: '/media/demo-2.mp4',
     images: ['/media/auto-4.png', '/media/auto-showroom_holo-3.jpg', '/media/auto-showroom_holo-2.jpg', '/media/auto-showroom-2.jpg', '/media/auto-showroom-holo.jpg'],
     videos: ['/media/demo-2.mp4', '/media/autoshowroom_vid-2.mp4'],
     description: 'Bring vehicles to life with holographic displays that showcase every angle, feature, and configuration possibility.',
@@ -47,6 +48,7 @@ export const useCases: UseCase[] = [
     slug: 'trade-show-booth',
     title: 'Trade Show Immersive Booth',
     image: '/media/events-hologram.jpg',
+    homeVideo: '/media/2-3.mp4',
     images: ['/media/gizmo-holograms-events-3_1440x900.jpg'],
     videos: ['/media/2-3.mp4', '/media/2-2.mp4', '/media/exhibitions.mp4'],
     description: 'Stand out at trade shows with holographic installations that draw crowds and create unforgettable brand impressions.',
@@ -55,7 +57,7 @@ export const useCases: UseCase[] = [
   {
     slug: 'events',
     title: 'Events & Live Productions',
-    image: '/media/hospitality.jpg',
+    image: '/media/Events-2.jpg',
     images: ['/media/hospitality.jpg', '/media/Events-2.jpg'],
     videos: [],
     description: 'Elevate concerts, galas, festivals and live productions with show-stopping volumetric holograms that transform venues into immersive worlds.',
