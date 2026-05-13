@@ -2,6 +2,10 @@ export interface UseCase {
   slug: string;
   title: string;
   image: string;
+  /** Optional desktop-only hero image (e.g. landscape variant). */
+  imageDesktop?: string;
+  /** Optional video to use as the homepage tile media (preferred over image when set). */
+  homeVideo?: string;
   images: string[];
   videos: string[];
   description: string;
