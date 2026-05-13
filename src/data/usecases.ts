@@ -28,11 +28,11 @@ export const useCases: UseCase[] = [
     slug: 'real-estate-sales-center',
     title: 'Real Estate Sales Center',
     image: '/media/hologram-for-real-estate.jpg',
+    imageDesktop: '/media/real-estate-hologram.jpg',
     images: ['/media/hologram-for-real-estate.jpg', '/media/real-estate-hologram.jpg', '/media/real-estate-hologram-2.jpg'],
     videos: ['/media/real-estate-vid.mp4', '/media/4.mp4'],
     description: 'Convert sales centers into immersive visualization experiences where buyers walk through unbuilt properties and explore entire developments.',
     highlights: ['3D property walkthroughs', 'Interactive floor plans', 'Neighborhood visualization', 'Buyer engagement tracking'],
-    imageFit: 'contain',
   },
   {
     slug: 'automotive-showroom',
