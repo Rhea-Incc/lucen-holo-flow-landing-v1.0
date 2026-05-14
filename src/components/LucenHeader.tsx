@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion';
 import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
+import LucenWordmark from './LucenWordmark';
 
 const navItems = [
   { label: 'About', path: '/about' },
@@ -27,18 +28,20 @@ export default function LucenHeader() {
       }}
     >
       <div className="max-w-7xl mx-auto px-6 flex items-center justify-between h-16">
-        {/* Logo + Name */}
-        <Link to="/" className="flex items-center gap-3 group">
+        {/* Logo + Wordmark */}
+        <Link to="/" className="flex items-center gap-3 group" aria-label="Lucen home">
           <img
             src="/media/lucen-logo-2026.png"
-            alt="Lucen"
+            alt=""
+            aria-hidden="true"
             className="w-8 h-8 object-contain"
             style={{ filter: 'drop-shadow(0 0 12px hsl(192 95% 60% / 0.4))' }}
             loading="eager"
           />
-          <span className="font-display text-lg font-bold tracking-tight lucen-gradient-text group-hover:opacity-80 transition-opacity">
-            Lucen
-          </span>
+          <LucenWordmark
+            className="h-4 w-auto text-foreground group-hover:text-primary transition-colors duration-300"
+            title="Lucen"
+          />
         </Link>
 
         {/* Desktop Nav */}

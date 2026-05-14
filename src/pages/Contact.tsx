@@ -1,26 +1,46 @@
 import { motion } from 'framer-motion';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useSearchParams, Link } from 'react-router-dom';
 import LucenHeader from '@/components/LucenHeader';
 import ParticleField from '@/components/ParticleField';
 import CursorGlow from '@/components/CursorGlow';
 import Seo from '@/components/Seo';
 import WhatsAppButton from '@/components/WhatsAppButton';
-import { Phone, MessageCircle, PhoneCall, Loader2, CheckCircle } from 'lucide-react';
+import { OptimizedImage } from '@/components/OptimizedMedia';
+import { Phone, MessageCircle, PhoneCall, Mail, Loader2, CheckCircle } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import { trackEngineEvent } from '@/lib/engineAnalytics';
+import { industries } from '@/data/industries';
+import { useCases } from '@/data/usecases';
+
+const SUPPORT_EMAIL = 'holograms@lucene.co';
 
 export default function Contact() {
+  const [params] = useSearchParams();
   const [mode, setMode] = useState<'message' | 'call' | 'callback'>('message');
   const [loading, setLoading] = useState(false);
   const [submitted, setSubmitted] = useState(false);
 
-  // Form state
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
+  const [company, setCompany] = useState('');
+  const [country, setCountry] = useState('');
+  const [industry, setIndustry] = useState('');
+  const [useCase, setUseCase] = useState('');
+  const [budget, setBudget] = useState('');
+  const [timeline, setTimeline] = useState('');
   const [message, setMessage] = useState('');
   const [preferredTime, setPreferredTime] = useState('');
+
+  // Pre-fill industry / use case from query string when arriving from a deep link
+  useEffect(() => {
+    const i = params.get('industry');
+    const u = params.get('use_case');
+    if (i) setIndustry(i);
+    if (u) setUseCase(u);
+  }, [params]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -33,6 +53,12 @@ export default function Contact() {
       name: name.trim(),
       email: email.trim() || null,
       phone: phone.trim() || null,
+      company: company.trim() || null,
+      country: country.trim() || null,
+      industry: industry || null,
+      use_case: useCase || null,
+      budget: budget || null,
+      timeline: timeline || null,
       message: message.trim() || null,
       mode,
       preferred_time: preferredTime || null,
@@ -45,19 +71,20 @@ export default function Contact() {
     }
 
     setSubmitted(true);
-    toast.success('Message sent successfully!');
-    const integrationSlug = new URLSearchParams(window.location.search).get('integration');
+    toast.success('Message sent — we\'ll be in touch shortly.');
     void trackEngineEvent({
       event_type: 'conversion',
-      integration_slug: integrationSlug,
+      integration_slug: params.get('integration'),
       source: 'contact_form',
-      metadata: { mode },
+      metadata: { mode, industry, use_case: useCase, budget, timeline },
     });
-    setName(''); setEmail(''); setPhone(''); setMessage(''); setPreferredTime('');
+    setName(''); setEmail(''); setPhone(''); setCompany(''); setCountry('');
+    setMessage(''); setPreferredTime(''); setBudget(''); setTimeline('');
     setTimeout(() => setSubmitted(false), 4000);
   };
 
-  const inputClass = "w-full glass-panel px-4 py-3 font-body text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-primary/30";
+  const inputClass = 'w-full glass-panel px-4 py-3 font-body text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-primary/30 rounded-md';
+  const labelClass = 'font-display text-xs text-muted-foreground tracking-wide uppercase block mb-2';
 
   return (
     <div className="relative min-h-screen">
@@ -71,107 +98,232 @@ export default function Contact() {
       <LucenHeader />
       <WhatsAppButton />
 
-      <div className="pt-28 pb-20 px-6 flex items-center justify-center min-h-screen">
-        <motion.div
-          initial={{ opacity: 0, y: 30, filter: 'blur(15px)' }}
-          animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
-          transition={{ duration: 0.8 }}
-          className="glass-panel-elevated glow-edge p-10 sm:p-14 max-w-xl w-full"
-        >
-          <p className="text-sm font-display tracking-[0.3em] uppercase text-primary mb-4">Reach Out</p>
-          <h1 className="font-display text-3xl sm:text-4xl font-bold text-foreground mb-6">Contact Us</h1>
-
-          {/* Mode Tabs */}
-          <div className="flex gap-2 mb-8">
-            {[
-              { key: 'message' as const, label: 'Send Message', icon: MessageCircle },
-              { key: 'call' as const, label: 'Call Us', icon: Phone },
-              { key: 'callback' as const, label: 'Request Callback', icon: PhoneCall },
-            ].map((tab) => (
-              <button
-                key={tab.key}
-                onClick={() => { setMode(tab.key); setSubmitted(false); }}
-                className={`flex-1 glass-panel px-3 py-2.5 font-display text-xs tracking-wide flex items-center justify-center gap-1.5 transition-all duration-300 ${
-                  mode === tab.key
-                    ? 'text-primary border-primary/30 glow-edge'
-                    : 'text-muted-foreground hover:text-foreground'
-                }`}
+      {/* Hero */}
+      <section className="relative pt-24 pb-12">
+        <div className="relative h-[44vh] min-h-[320px] max-h-[520px] w-full overflow-hidden">
+          <OptimizedImage
+            src="/media/contact-hero.jpg"
+            alt="Lucen network hero"
+            priority
+            className="absolute inset-0 w-full h-full"
+          />
+          <div className="absolute inset-0 bg-gradient-to-b from-background/40 via-background/30 to-background" />
+          <div className="absolute inset-0 flex items-end">
+            <div className="max-w-6xl mx-auto px-6 pb-12 w-full">
+              <motion.div
+                initial={{ opacity: 0, y: 20, filter: 'blur(10px)' }}
+                animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+                transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
               >
-                <tab.icon className="w-3.5 h-3.5" />
-                {tab.label}
-              </button>
-            ))}
-          </div>
-
-          {submitted && (
-            <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} className="text-center py-8 space-y-3">
-              <CheckCircle className="w-10 h-10 text-primary mx-auto" />
-              <p className="font-display text-lg text-foreground">Thank you!</p>
-              <p className="text-muted-foreground text-sm">We'll get back to you soon.</p>
-            </motion.div>
-          )}
-
-          {!submitted && mode === 'call' && (
-            <div className="text-center space-y-6">
-              <p className="text-muted-foreground font-body text-sm">Speak directly with our team</p>
-              <a href="tel:+254727750097" className="w-full glass-panel-elevated glow-edge px-8 py-4 font-display text-lg font-medium tracking-wide text-primary hover:text-foreground transition-colors duration-300 flex items-center justify-center gap-3">
-                <Phone className="w-5 h-5" />
-                +254 727 750 097
-              </a>
-              <p className="text-muted-foreground font-body text-xs">Available Mon–Fri, 8 AM – 6 PM EAT</p>
+                <p className="text-sm font-display tracking-[0.3em] uppercase text-primary mb-3">Reach Out</p>
+                <h1 className="font-display text-4xl sm:text-6xl font-bold tracking-tight text-foreground max-w-3xl">
+                  Let’s scope your holographic deployment.
+                </h1>
+                <p className="text-muted-foreground font-body text-base sm:text-lg mt-4 max-w-2xl">
+                  Share a few details and a Lucen specialist will respond within one business day.
+                </p>
+              </motion.div>
             </div>
-          )}
+          </div>
+        </div>
+      </section>
 
-          {!submitted && mode === 'message' && (
-            <form className="space-y-5" onSubmit={handleSubmit}>
-              <div>
-                <label className="font-display text-xs text-muted-foreground tracking-wide uppercase block mb-2">Name</label>
-                <input className={inputClass} placeholder="Your name" value={name} onChange={e => setName(e.target.value)} required />
+      {/* Form + Side Image */}
+      <section className="px-6 pb-24">
+        <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+          {/* Side Image — sticks beside the form on desktop */}
+          <motion.aside
+            initial={{ opacity: 0, x: -20 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.7 }}
+            className="lg:col-span-5 lg:sticky lg:top-28 self-start"
+          >
+            <div className="glass-panel-elevated glow-edge overflow-hidden">
+              <div className="aspect-square w-full bg-black/40">
+                <OptimizedImage
+                  src="/media/contact-beside-form.jpg"
+                  alt="Holographic locomotive installation"
+                  className="w-full h-full"
+                />
               </div>
-              <div>
-                <label className="font-display text-xs text-muted-foreground tracking-wide uppercase block mb-2">Email</label>
-                <input type="email" className={inputClass} placeholder="your@email.com" value={email} onChange={e => setEmail(e.target.value)} required />
+              <div className="p-6 space-y-4">
+                <p className="font-display text-lg text-foreground">Direct lines</p>
+                <div className="space-y-3 text-sm">
+                  <a href={`mailto:${SUPPORT_EMAIL}`} className="flex items-center gap-3 text-muted-foreground hover:text-primary transition-colors">
+                    <Mail className="w-4 h-4 text-primary" /> {SUPPORT_EMAIL}
+                  </a>
+                  <a href="tel:+254727750097" className="flex items-center gap-3 text-muted-foreground hover:text-primary transition-colors">
+                    <Phone className="w-4 h-4 text-primary" /> +254 727 750 097
+                  </a>
+                </div>
+                <p className="text-muted-foreground text-xs">Mon–Fri · 8 AM – 6 PM EAT</p>
               </div>
-              <div>
-                <label className="font-display text-xs text-muted-foreground tracking-wide uppercase block mb-2">Message</label>
-                <textarea rows={4} className={`${inputClass} resize-none`} placeholder="Tell us about your project..." value={message} onChange={e => setMessage(e.target.value)} />
-              </div>
-              <button disabled={loading} className="w-full glass-panel-elevated glow-edge px-8 py-3 font-display text-sm font-medium tracking-wide text-primary hover:text-foreground transition-colors duration-300 flex items-center justify-center gap-2 disabled:opacity-50">
-                {loading ? <><Loader2 className="w-4 h-4 animate-spin" /> Sending...</> : 'Send Message'}
-              </button>
-            </form>
-          )}
+            </div>
+          </motion.aside>
 
-          {!submitted && mode === 'callback' && (
-            <form className="space-y-5" onSubmit={handleSubmit}>
-              <div>
-                <label className="font-display text-xs text-muted-foreground tracking-wide uppercase block mb-2">Name</label>
-                <input className={inputClass} placeholder="Your name" value={name} onChange={e => setName(e.target.value)} required />
+          {/* Form */}
+          <motion.div
+            initial={{ opacity: 0, y: 30, filter: 'blur(10px)' }}
+            whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
+            className="lg:col-span-7 glass-panel-elevated glow-edge p-8 sm:p-10"
+          >
+            {/* Mode Tabs */}
+            <div className="grid grid-cols-3 gap-2 mb-8">
+              {[
+                { key: 'message' as const, label: 'Send Message', icon: MessageCircle },
+                { key: 'call' as const, label: 'Call Us', icon: Phone },
+                { key: 'callback' as const, label: 'Request Callback', icon: PhoneCall },
+              ].map((tab) => (
+                <button
+                  key={tab.key}
+                  onClick={() => { setMode(tab.key); setSubmitted(false); }}
+                  className={`glass-panel px-3 py-2.5 rounded-md font-display text-xs tracking-wide flex items-center justify-center gap-1.5 transition-all duration-300 ${
+                    mode === tab.key ? 'text-primary border-primary/30 glow-edge' : 'text-muted-foreground hover:text-foreground'
+                  }`}
+                >
+                  <tab.icon className="w-3.5 h-3.5" />
+                  {tab.label}
+                </button>
+              ))}
+            </div>
+
+            {submitted && (
+              <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} className="text-center py-8 space-y-3">
+                <CheckCircle className="w-10 h-10 text-primary mx-auto" />
+                <p className="font-display text-lg text-foreground">Thank you!</p>
+                <p className="text-muted-foreground text-sm">We’ll be in touch within one business day.</p>
+              </motion.div>
+            )}
+
+            {!submitted && mode === 'call' && (
+              <div className="text-center space-y-6 py-4">
+                <p className="text-muted-foreground font-body text-sm">Speak directly with our team</p>
+                <a href="tel:+254727750097" className="w-full glass-panel-elevated glow-edge px-8 py-4 font-display text-lg font-medium tracking-wide text-primary hover:text-foreground transition-colors duration-300 flex items-center justify-center gap-3">
+                  <Phone className="w-5 h-5" /> +254 727 750 097
+                </a>
+                <a href={`mailto:${SUPPORT_EMAIL}`} className="w-full glass-panel-elevated glow-edge px-8 py-4 font-display text-base tracking-wide text-foreground hover:text-primary transition-colors duration-300 flex items-center justify-center gap-3">
+                  <Mail className="w-5 h-5" /> {SUPPORT_EMAIL}
+                </a>
+                <p className="text-muted-foreground font-body text-xs">Available Mon–Fri, 8 AM – 6 PM EAT</p>
               </div>
-              <div>
-                <label className="font-display text-xs text-muted-foreground tracking-wide uppercase block mb-2">Phone Number</label>
-                <input type="tel" className={inputClass} placeholder="+254 7XX XXX XXX" value={phone} onChange={e => setPhone(e.target.value)} required />
-              </div>
-              <div>
-                <label className="font-display text-xs text-muted-foreground tracking-wide uppercase block mb-2">Preferred Time</label>
-                <select className={`${inputClass} bg-transparent appearance-none`} value={preferredTime} onChange={e => setPreferredTime(e.target.value)}>
-                  <option value="" className="bg-card">Select a time</option>
-                  <option value="morning" className="bg-card">Morning (8–12 PM)</option>
-                  <option value="afternoon" className="bg-card">Afternoon (12–4 PM)</option>
-                  <option value="evening" className="bg-card">Evening (4–6 PM)</option>
-                </select>
-              </div>
-              <div>
-                <label className="font-display text-xs text-muted-foreground tracking-wide uppercase block mb-2">Brief Note (optional)</label>
-                <textarea rows={2} className={`${inputClass} resize-none`} placeholder="What's this about?" value={message} onChange={e => setMessage(e.target.value)} />
-              </div>
-              <button disabled={loading} className="w-full glass-panel-elevated glow-edge px-8 py-3 font-display text-sm font-medium tracking-wide text-primary hover:text-foreground transition-colors duration-300 flex items-center justify-center gap-2 disabled:opacity-50">
-                {loading ? <><Loader2 className="w-4 h-4 animate-spin" /> Sending...</> : 'Request Callback'}
-              </button>
-            </form>
-          )}
-        </motion.div>
-      </div>
+            )}
+
+            {!submitted && mode !== 'call' && (
+              <form className="space-y-5" onSubmit={handleSubmit}>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div>
+                    <label className={labelClass}>Full name</label>
+                    <input className={inputClass} placeholder="Your name" value={name} onChange={(e) => setName(e.target.value)} required />
+                  </div>
+                  <div>
+                    <label className={labelClass}>Company</label>
+                    <input className={inputClass} placeholder="Organization" value={company} onChange={(e) => setCompany(e.target.value)} />
+                  </div>
+                  {mode === 'message' ? (
+                    <>
+                      <div>
+                        <label className={labelClass}>Email</label>
+                        <input type="email" className={inputClass} placeholder="your@email.com" value={email} onChange={(e) => setEmail(e.target.value)} required />
+                      </div>
+                      <div>
+                        <label className={labelClass}>Phone (optional)</label>
+                        <input type="tel" className={inputClass} placeholder="+254 7XX XXX XXX" value={phone} onChange={(e) => setPhone(e.target.value)} />
+                      </div>
+                    </>
+                  ) : (
+                    <>
+                      <div>
+                        <label className={labelClass}>Phone</label>
+                        <input type="tel" className={inputClass} placeholder="+254 7XX XXX XXX" value={phone} onChange={(e) => setPhone(e.target.value)} required />
+                      </div>
+                      <div>
+                        <label className={labelClass}>Email (optional)</label>
+                        <input type="email" className={inputClass} placeholder="your@email.com" value={email} onChange={(e) => setEmail(e.target.value)} />
+                      </div>
+                    </>
+                  )}
+                  <div>
+                    <label className={labelClass}>Country</label>
+                    <input className={inputClass} placeholder="Kenya, UAE, …" value={country} onChange={(e) => setCountry(e.target.value)} />
+                  </div>
+                  <div>
+                    <label className={labelClass}>Industry</label>
+                    <select className={`${inputClass} bg-transparent appearance-none`} value={industry} onChange={(e) => setIndustry(e.target.value)}>
+                      <option value="" className="bg-card">Select industry</option>
+                      {industries.map((i) => (
+                        <option key={i.slug} value={i.slug} className="bg-card">{i.name}</option>
+                      ))}
+                    </select>
+                  </div>
+                  <div>
+                    <label className={labelClass}>Use case</label>
+                    <select className={`${inputClass} bg-transparent appearance-none`} value={useCase} onChange={(e) => setUseCase(e.target.value)}>
+                      <option value="" className="bg-card">Select use case</option>
+                      {useCases.map((u) => (
+                        <option key={u.slug} value={u.slug} className="bg-card">{u.title}</option>
+                      ))}
+                    </select>
+                  </div>
+                  <div>
+                    <label className={labelClass}>Budget</label>
+                    <select className={`${inputClass} bg-transparent appearance-none`} value={budget} onChange={(e) => setBudget(e.target.value)}>
+                      <option value="" className="bg-card">Select budget</option>
+                      <option value="<25k" className="bg-card">Under $25k</option>
+                      <option value="25-100k" className="bg-card">$25k – $100k</option>
+                      <option value="100-500k" className="bg-card">$100k – $500k</option>
+                      <option value=">500k" className="bg-card">$500k+</option>
+                      <option value="exploring" className="bg-card">Just exploring</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label className={labelClass}>Timeline</label>
+                    <select className={`${inputClass} bg-transparent appearance-none`} value={timeline} onChange={(e) => setTimeline(e.target.value)}>
+                      <option value="" className="bg-card">Select timeline</option>
+                      <option value="<1mo" className="bg-card">Within 1 month</option>
+                      <option value="1-3mo" className="bg-card">1 – 3 months</option>
+                      <option value="3-6mo" className="bg-card">3 – 6 months</option>
+                      <option value=">6mo" className="bg-card">6 months +</option>
+                    </select>
+                  </div>
+                  {mode === 'callback' && (
+                    <div>
+                      <label className={labelClass}>Preferred time</label>
+                      <select className={`${inputClass} bg-transparent appearance-none`} value={preferredTime} onChange={(e) => setPreferredTime(e.target.value)}>
+                        <option value="" className="bg-card">Select a time</option>
+                        <option value="morning" className="bg-card">Morning (8 AM – 12 PM)</option>
+                        <option value="afternoon" className="bg-card">Afternoon (12 – 4 PM)</option>
+                        <option value="evening" className="bg-card">Evening (4 – 6 PM)</option>
+                      </select>
+                    </div>
+                  )}
+                </div>
+
+                <div>
+                  <label className={labelClass}>{mode === 'callback' ? 'Brief note (optional)' : 'Project details'}</label>
+                  <textarea
+                    rows={mode === 'callback' ? 3 : 5}
+                    className={`${inputClass} resize-none`}
+                    placeholder="Tell us about your venue, audience, and what success looks like…"
+                    value={message}
+                    onChange={(e) => setMessage(e.target.value)}
+                  />
+                </div>
+
+                <button disabled={loading} className="w-full glass-panel-elevated glow-edge px-8 py-3 rounded-md font-display text-sm font-medium tracking-wide text-primary hover:text-foreground transition-colors duration-300 flex items-center justify-center gap-2 disabled:opacity-50">
+                  {loading ? <><Loader2 className="w-4 h-4 animate-spin" /> Sending...</> : (mode === 'callback' ? 'Request Callback' : 'Send Message')}
+                </button>
+
+                <p className="text-muted-foreground text-xs text-center">
+                  Prefer email? <Link to="#" onClick={(e) => { e.preventDefault(); window.location.href = `mailto:${SUPPORT_EMAIL}`; }} className="text-primary hover:underline">{SUPPORT_EMAIL}</Link>
+                </p>
+              </form>
+            )}
+          </motion.div>
+        </div>
+      </section>
     </div>
   );
 }
