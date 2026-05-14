@@ -43,37 +43,55 @@ export type Database = {
       }
       contact_submissions: {
         Row: {
+          budget: string | null
+          company: string | null
+          country: string | null
           created_at: string
           email: string | null
           id: string
+          industry: string | null
           message: string | null
           mode: string
           name: string
           phone: string | null
           preferred_time: string | null
           status: string
+          timeline: string | null
+          use_case: string | null
         }
         Insert: {
+          budget?: string | null
+          company?: string | null
+          country?: string | null
           created_at?: string
           email?: string | null
           id?: string
+          industry?: string | null
           message?: string | null
           mode?: string
           name: string
           phone?: string | null
           preferred_time?: string | null
           status?: string
+          timeline?: string | null
+          use_case?: string | null
         }
         Update: {
+          budget?: string | null
+          company?: string | null
+          country?: string | null
           created_at?: string
           email?: string | null
           id?: string
+          industry?: string | null
           message?: string | null
           mode?: string
           name?: string
           phone?: string | null
           preferred_time?: string | null
           status?: string
+          timeline?: string | null
+          use_case?: string | null
         }
         Relationships: []
       }
