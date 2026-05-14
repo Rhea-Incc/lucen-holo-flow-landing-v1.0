@@ -1,3 +1,5 @@
+export interface UseCaseMetric { value: string; label: string }
+
 export interface UseCase {
   slug: string;
   title: string;
@@ -12,6 +14,14 @@ export interface UseCase {
   highlights: string[];
   /** How the homepage hero image should fit. Defaults to 'cover'. Use 'contain' when the source must be shown in full. */
   imageFit?: 'cover' | 'contain';
+  /** Headline KPIs surfaced on the use case page. */
+  metrics?: UseCaseMetric[];
+  /** Sector context blurbs surfaced as "Why it works". */
+  insights?: string[];
+  /** Operational footprint required to deploy this use case. */
+  requirements?: string[];
+  /** Industry slug used to pre-fill the contact CTA. */
+  industrySlug?: string;
 }
 
 export const useCases: UseCase[] = [
