@@ -64,11 +64,6 @@ export default function StickyScrollytell({ panels, label }: StickyScrollytellPr
     target: containerRef,
     offset: ['start start', 'end end'],
   });
-  const containerRef = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ['start start', 'end end'],
-  });
 
   // Each panel's media is visible during its own slice of total scroll
   const segment = 1 / panels.length;
