@@ -21,11 +21,49 @@ function resolveType(panel: ScrollPanel) {
   return panel.mediaType ?? (panel.media.match(/\.(mp4|webm|mov)$/i) ? 'video' : 'image');
 }
 
+function StickyLayer({
+  panel,
+  index,
+  total,
+  progress,
+}: {
+  panel: ScrollPanel;
+  index: number;
+  total: number;
+  progress: MotionValue<number>;
+}) {
+  const segment = 1 / total;
+  const start = index * segment;
+  const mid = start + segment * 0.5;
+  const end = start + segment;
+  const opacity = useTransform(
+    progress,
+    [Math.max(0, start - segment * 0.15), start + segment * 0.15, end - segment * 0.05, end + segment * 0.1],
+    [0, 1, 1, 0],
+  );
+  const scale = useTransform(progress, [start, mid, end], [1.08, 1.02, 1.12]);
+  const type = resolveType(panel);
+  return (
+    <motion.div style={{ opacity, scale }} className="absolute inset-0">
+      {type === 'video' ? (
+        <OptimizedVideo src={panel.media} priority={index === 0} className="w-full h-full object-cover" />
+      ) : (
+        <OptimizedImage src={panel.media} alt={panel.heading} priority={index === 0} className="absolute inset-0 w-full h-full" />
+      )}
+    </motion.div>
+  );
+}
+
 /**
  * Sticky-layered scrollytelling: each panel pins its media to the viewport
  * while text scrolls past, then cross-fades to the next panel's media.
  */
 export default function StickyScrollytell({ panels, label }: StickyScrollytellProps) {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ['start start', 'end end'],
+  });
   const containerRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
     target: containerRef,
