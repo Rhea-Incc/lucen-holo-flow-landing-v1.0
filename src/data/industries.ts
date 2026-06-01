@@ -190,9 +190,9 @@ export const industries: Industry[] = [
     name: 'Airports & Malls',
     value: 'Monetizes high footfall',
     icon: '◇',
-    heroImage: '/media/Innovative-Brands-and-Event-Organisers.jpg',
-    images: ['/media/Innovative-Brands-and-Event-Organisers.jpg', '/media/Starbucks.jpg'],
-    videos: ['/media/demo.mp4'],
+    heroImage: '/media/holo-monument.png',
+    images: ['/media/holo-monument.png', '/media/Innovative-Brands-and-Event-Organisers.jpg', '/media/Starbucks.jpg'],
+    videos: ['/media/captivate-passersby.mp4', '/media/give-your-outdoor-advertising.mp4', '/media/demo.mp4'],
     description: 'Lucen creates DOOH holographic advertising networks in high-footfall public spaces. Airports and malls become premium media channels with measurable engagement data.',
     services: [
       'DOOH holographic ad networks',
@@ -298,8 +298,8 @@ export const industries: Industry[] = [
     name: 'Airlines',
     value: 'Elevates passenger experience',
     icon: '✈',
-    heroImage: '/media/gizmo-holograms-events-3_1440x900.jpg',
-    images: ['/media/gizmo-holograms-events-3_1440x900.jpg'],
+    heroImage: '/media/holo-plane.png',
+    images: ['/media/holo-plane.png', '/media/gizmo-holograms-events-3_1440x900.jpg'],
     videos: ['/media/demo.mp4'],
     description: 'Lucen enhances the airline experience from lounge to gate with holographic wayfinding, immersive brand experiences, and premium advertising networks that captivate high-value travelers.',
     services: [
