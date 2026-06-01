@@ -4,6 +4,7 @@ import Seo from '@/components/Seo';
 import ParticleField from '@/components/ParticleField';
 import CursorGlow from '@/components/CursorGlow';
 import WhatsAppButton from '@/components/WhatsAppButton';
+import StickyScrollytell from '@/components/StickyScrollytell';
 import { Link } from 'react-router-dom';
 import { Lightbulb, Eye, Target, Zap } from 'lucide-react';
 
