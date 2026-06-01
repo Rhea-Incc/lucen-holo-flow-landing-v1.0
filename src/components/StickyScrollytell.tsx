@@ -1,5 +1,5 @@
 import { useRef } from 'react';
-import { motion, useScroll, useTransform } from 'framer-motion';
+import { motion, MotionValue, useScroll, useTransform } from 'framer-motion';
 import { OptimizedImage, OptimizedVideo } from './OptimizedMedia';
 
 export interface ScrollPanel {
@@ -39,32 +39,15 @@ export default function StickyScrollytell({ panels, label }: StickyScrollytellPr
     <section ref={containerRef} className="relative w-full" style={{ minHeight: `${panels.length * 100}vh` }}>
       {/* Sticky media stack */}
       <div className="sticky top-0 h-screen w-full overflow-hidden">
-        {panels.map((p, i) => {
-          const start = i * segment;
-          const mid = start + segment * 0.5;
-          const end = start + segment;
-          // Fade in across the first half of the panel, fade out across the next panel's intro
-          const opacity = useTransform(
-            scrollYProgress,
-            [Math.max(0, start - segment * 0.15), start + segment * 0.15, end - segment * 0.05, end + segment * 0.1],
-            [0, 1, 1, 0],
-          );
-          const scale = useTransform(scrollYProgress, [start, mid, end], [1.08, 1.02, 1.12]);
-          const type = resolveType(p);
-          return (
-            <motion.div
-              key={`${p.media}-${i}`}
-              style={{ opacity, scale }}
-              className="absolute inset-0"
-            >
-              {type === 'video' ? (
-                <OptimizedVideo src={p.media} priority={i === 0} className="w-full h-full object-cover" />
-              ) : (
-                <OptimizedImage src={p.media} alt={p.heading} priority={i === 0} className="absolute inset-0 w-full h-full" />
-              )}
-            </motion.div>
-          );
-        })}
+        {panels.map((p, i) => (
+          <StickyLayer
+            key={`${p.media}-${i}`}
+            panel={p}
+            index={i}
+            total={panels.length}
+            progress={scrollYProgress}
+          />
+        ))}
         {/* Cinematic vignettes / depth */}
         <div className="absolute inset-0 bg-gradient-to-r from-background/70 via-background/10 to-transparent pointer-events-none" />
         <div className="absolute inset-0 bg-gradient-to-t from-background/60 via-transparent to-background/40 pointer-events-none" />
