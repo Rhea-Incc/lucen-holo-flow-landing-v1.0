@@ -2,11 +2,13 @@ import { useParams, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { useCases } from '@/data/usecases';
 import { industries } from '@/data/industries';
-import MediaGallery from '@/components/MediaGallery';
 import LucenHeader from '@/components/LucenHeader';
 import ParticleField from '@/components/ParticleField';
 import CursorGlow from '@/components/CursorGlow';
 import Seo from '@/components/Seo';
+import ImmersiveHero from '@/components/ImmersiveHero';
+import StaggeredMediaGrid from '@/components/StaggeredMediaGrid';
+import StickyScrollytell, { ScrollPanel } from '@/components/StickyScrollytell';
 
 export default function UseCasePage() {
   const { slug } = useParams<{ slug: string }>();
@@ -25,6 +27,20 @@ export default function UseCasePage() {
   }
 
   const industry = industries.find((i) => i.slug === useCase.industrySlug);
+  const heroMedia = useCase.videos[0] ?? useCase.images[0] ?? useCase.image;
+  const remaining: { src: string }[] = [
+    ...useCase.videos.slice(1).map((src) => ({ src })),
+    ...useCase.images.map((src) => ({ src })),
+  ];
+
+  // Scrollytell panels — pair each insight with a piece of media
+  const insightMedia = [...useCase.videos, ...useCase.images];
+  const scrollPanels: ScrollPanel[] = (useCase.insights ?? []).slice(0, 4).map((ins, i) => ({
+    media: insightMedia[i % insightMedia.length] ?? heroMedia,
+    eyebrow: `Insight 0${i + 1}`,
+    heading: useCase.highlights[i] ?? 'Why it works',
+    body: ins,
+  }));
 
   return (
     <div className="relative min-h-screen">
@@ -37,35 +53,39 @@ export default function UseCasePage() {
       <CursorGlow />
       <LucenHeader />
 
-      <div className="pt-24 pb-20 px-6">
+      <ImmersiveHero
+        src={heroMedia}
+        eyebrow={industry ? `Use Case · ${industry.name}` : 'Use Case'}
+        title={useCase.title}
+        subtitle={useCase.description}
+        accent={useCase.images[1]}
+      />
+
+      {remaining.length > 0 && (
+        <StaggeredMediaGrid
+          items={remaining}
+          eyebrow="In the field"
+          heading="Deployments at scale"
+        />
+      )}
+
+      {scrollPanels.length > 0 && (
+        <StickyScrollytell label="The Lucen advantage" panels={scrollPanels} />
+      )}
+
+      <div className="pt-8 pb-20 px-6">
         <div className="max-w-6xl mx-auto">
           <motion.div
-            initial={{ opacity: 0, y: 30, filter: 'blur(15px)' }}
-            animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
-            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-            className="mb-12"
-          >
-            <div className="md:hidden">
-              <div className="w-full" style={{ height: '70vh' }}>
-                <MediaGallery images={useCase.images} videos={useCase.videos} title={useCase.title} />
-              </div>
-            </div>
-            <div className="hidden md:block">
-              <MediaGallery images={useCase.images} videos={useCase.videos} title={useCase.title} />
-            </div>
-          </motion.div>
-
-          {/* Header */}
-          <motion.div
             initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.1 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
             className="mb-12 max-w-4xl"
           >
             <p className="text-sm font-display tracking-[0.3em] uppercase text-primary mb-4">
-              Use Case{industry ? <> · <Link to={`/industries/${industry.slug}`} className="hover:underline">{industry.name}</Link></> : null}
+              {industry ? <Link to={`/industries/${industry.slug}`} className="hover:underline">{industry.name}</Link> : 'Overview'}
             </p>
-            <h1 className="font-display text-4xl sm:text-5xl font-bold tracking-tight text-foreground mb-6">{useCase.title}</h1>
+            <h2 className="font-display text-3xl sm:text-4xl font-bold tracking-tight text-foreground mb-6">{useCase.title}</h2>
             <p className="text-muted-foreground font-body text-lg leading-relaxed">{useCase.description}</p>
           </motion.div>
 

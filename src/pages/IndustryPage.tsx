@@ -2,11 +2,13 @@ import { useParams, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { industries } from '@/data/industries';
 import { useCases } from '@/data/usecases';
-import MediaGallery from '@/components/MediaGallery';
 import LucenHeader from '@/components/LucenHeader';
 import ParticleField from '@/components/ParticleField';
 import CursorGlow from '@/components/CursorGlow';
 import Seo from '@/components/Seo';
+import ImmersiveHero from '@/components/ImmersiveHero';
+import StaggeredMediaGrid from '@/components/StaggeredMediaGrid';
+import StickyScrollytell, { ScrollPanel } from '@/components/StickyScrollytell';
 
 export default function IndustryPage() {
   const { slug } = useParams<{ slug: string }>();
@@ -25,6 +27,18 @@ export default function IndustryPage() {
   }
 
   const relatedUseCases = useCases.filter((u) => u.industrySlug === industry.slug);
+  const heroMedia = industry.videos[0] ?? industry.images[0] ?? industry.heroImage;
+  const remaining: { src: string }[] = [
+    ...industry.videos.slice(1).map((src) => ({ src })),
+    ...industry.images.map((src) => ({ src })),
+  ];
+  const insightMedia = [...industry.videos, ...industry.images];
+  const scrollPanels: ScrollPanel[] = (industry.insights ?? []).slice(0, 4).map((ins, i) => ({
+    media: insightMedia[i % insightMedia.length] ?? heroMedia,
+    eyebrow: `Why ${industry.name}`,
+    heading: industry.services[i] ?? industry.value,
+    body: ins,
+  }));
 
   return (
     <div className="relative min-h-screen">
@@ -37,34 +51,33 @@ export default function IndustryPage() {
       <CursorGlow />
       <LucenHeader />
 
-      <div className="pt-24 pb-20 px-6">
-        <div className="max-w-6xl mx-auto">
-          {/* Hero Gallery */}
-          <motion.div
-            initial={{ opacity: 0, y: 30, filter: 'blur(15px)' }}
-            animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
-            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-            className="mb-12"
-          >
-            <div className="md:hidden">
-              <div className="w-full" style={{ height: '70vh' }}>
-                <MediaGallery images={industry.images} videos={industry.videos} title={industry.name} />
-              </div>
-            </div>
-            <div className="hidden md:block">
-              <MediaGallery images={industry.images} videos={industry.videos} title={industry.name} />
-            </div>
-          </motion.div>
+      <ImmersiveHero
+        src={heroMedia}
+        eyebrow={`${industry.icon} ${industry.name}`}
+        title={industry.value}
+        subtitle={industry.description}
+        accent={industry.images[1]}
+      />
 
-          {/* Header */}
+      {remaining.length > 0 && (
+        <StaggeredMediaGrid items={remaining} eyebrow="Sector visuals" heading={`${industry.name} in motion`} />
+      )}
+
+      {scrollPanels.length > 0 && (
+        <StickyScrollytell label="The Lucen advantage" panels={scrollPanels} />
+      )}
+
+      <div className="pt-8 pb-20 px-6">
+        <div className="max-w-6xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.1 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
             className="mb-12 max-w-4xl"
           >
             <p className="text-sm font-display tracking-[0.3em] uppercase text-primary mb-4">{industry.icon} Industry</p>
-            <h1 className="font-display text-4xl sm:text-5xl font-bold tracking-tight text-foreground mb-6">{industry.name}</h1>
+            <h2 className="font-display text-3xl sm:text-4xl font-bold tracking-tight text-foreground mb-6">{industry.name}</h2>
             <p className="text-muted-foreground font-body text-lg leading-relaxed mb-4">{industry.value}</p>
             <p className="text-muted-foreground font-body leading-relaxed">{industry.description}</p>
           </motion.div>
