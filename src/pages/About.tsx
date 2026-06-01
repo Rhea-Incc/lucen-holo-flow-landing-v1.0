@@ -89,6 +89,15 @@ export default function About() {
         </div>
       </section>
 
+      <StickyScrollytell
+        label="The Lucen story"
+        panels={[
+          { media: '/media/holo-globe.png', eyebrow: 'Engineering light', heading: 'Light as infrastructure', body: 'Lucen turns physical venues into intelligent media surfaces — light, motion and data woven into one continuous system.' },
+          { media: '/media/lucen-lounge.png', eyebrow: 'Spatial computing', heading: 'Spatial canvases, anywhere', body: 'Lobbies, atriums, showrooms, lounges — our holographic stack adapts to any architecture and ambient light condition.' },
+          { media: '/media/holo-monument.png', eyebrow: 'Lucen Engine', heading: 'Measurable, in real time', body: 'Every impression, dwell-second and interaction is captured and attributed by the Lucen Engine analytics platform.' },
+        ]}
+      />
+
       {/* CTA */}
       <section className="px-6 pb-24 text-center">
         <motion.div {...fadeUp}>
