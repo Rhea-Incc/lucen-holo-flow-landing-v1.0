@@ -147,11 +147,15 @@ export default function Contact() {
             className="lg:col-span-5 lg:sticky lg:top-28 self-start"
           >
             <div className="glass-panel-elevated glow-edge overflow-hidden">
-              <div className="aspect-square w-full bg-black/40">
+              <div className="relative aspect-square w-full bg-black/40">
+                <div className="absolute inset-0 scale-110 blur-2xl opacity-50">
+                  <OptimizedImage src="/media/contact-beside-form.jpg" alt="" className="absolute inset-0 w-full h-full" />
+                </div>
                 <OptimizedImage
                   src="/media/contact-beside-form.jpg"
                   alt="Holographic locomotive installation"
-                  className="w-full h-full"
+                  fit="contain"
+                  className="absolute inset-0 w-full h-full"
                 />
               </div>
               <div className="p-6 space-y-4">
