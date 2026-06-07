@@ -41,15 +41,25 @@ function StickyLayer({
     [Math.max(0, start - segment * 0.15), start + segment * 0.15, end - segment * 0.05, end + segment * 0.1],
     [0, 1, 1, 0],
   );
-  const scale = useTransform(progress, [start, mid, end], [1.08, 1.02, 1.12]);
   const type = resolveType(panel);
   return (
-    <motion.div style={{ opacity, scale }} className="absolute inset-0">
-      {type === 'video' ? (
-        <OptimizedVideo src={panel.media} priority={index === 0} className="w-full h-full object-cover" />
-      ) : (
-        <OptimizedImage src={panel.media} alt={panel.heading} priority={index === 0} className="absolute inset-0 w-full h-full" />
-      )}
+    <motion.div style={{ opacity }} className="absolute inset-0">
+      {/* Blurred backdrop fills frame */}
+      <div className="absolute inset-0 scale-110 blur-2xl opacity-60">
+        {type === 'video' ? (
+          <OptimizedVideo src={panel.media} priority={index === 0} className="w-full h-full object-cover" />
+        ) : (
+          <OptimizedImage src={panel.media} alt="" priority={index === 0} className="absolute inset-0 w-full h-full" />
+        )}
+      </div>
+      {/* Contained foreground — never cropped */}
+      <div className="absolute inset-0 flex items-center justify-center p-4 sm:p-8">
+        {type === 'video' ? (
+          <OptimizedVideo src={panel.media} priority={index === 0} className="max-w-full max-h-full w-auto h-auto object-contain" />
+        ) : (
+          <OptimizedImage src={panel.media} alt={panel.heading} priority={index === 0} fit="contain" className="w-full h-full" />
+        )}
+      </div>
     </motion.div>
   );
 }
