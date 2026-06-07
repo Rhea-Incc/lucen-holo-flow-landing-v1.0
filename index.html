@@ -4,8 +4,11 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Lucen — Holographic Interface System</title>
-    <meta name="description" content="A real-time holographic interface where media, motion, and light form a continuous intelligent system.">
+    <meta name="description" content="Lucen is a real-time holographic interface system with live audience analytics for retail, real estate, automotive, events, and DOOH networks.">
     <meta name="author" content="Lucen" />
+    <meta name="keywords" content="holographic displays, holograms, holographic advertising, transparent LED, anamorphic billboards, volumetric display, DOOH analytics, retail hologram, real estate hologram, automotive showroom hologram, immersive event production, Lucen Engine">
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+    <meta name="googlebot" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
     <link rel="canonical" href="https://lucen-holo-flow.lovable.app/" />
 
     <link rel="preconnect" href="https://qiuagqujrqlzkuxqfink.supabase.co" crossorigin>
@@ -28,15 +31,39 @@
       "@graph": [
         {
           "@type": "Organization",
+          "@id": "https://lucen-holo-flow.lovable.app/#organization",
           "name": "Lucen",
+          "alternateName": ["Lucen Holograms", "Lucene"],
           "url": "https://lucen-holo-flow.lovable.app/",
           "logo": "https://lucen-holo-flow.lovable.app/media/lucen-logo-2026.png",
-          "description": "Lucen designs and operates a real-time holographic interface system for retail, real estate, automotive, events, and DOOH networks."
+          "description": "Lucen designs and operates a real-time holographic interface system for retail, real estate, automotive, events, and DOOH networks.",
+          "email": "holograms@lucene.co",
+          "telephone": "+254727750097",
+          "contactPoint": [{
+            "@type": "ContactPoint",
+            "telephone": "+254727750097",
+            "email": "holograms@lucene.co",
+            "contactType": "sales",
+            "areaServed": "Worldwide",
+            "availableLanguage": ["English"]
+          }],
+          "knowsAbout": [
+            "Holographic displays", "Transparent LED", "Anamorphic billboards",
+            "Volumetric displays", "DOOH analytics", "Retail experiences",
+            "Real estate marketing", "Automotive showrooms", "Live events"
+          ]
         },
         {
           "@type": "WebSite",
+          "@id": "https://lucen-holo-flow.lovable.app/#website",
           "name": "Lucen",
-          "url": "https://lucen-holo-flow.lovable.app/"
+          "url": "https://lucen-holo-flow.lovable.app/",
+          "publisher": { "@id": "https://lucen-holo-flow.lovable.app/#organization" },
+          "potentialAction": {
+            "@type": "SearchAction",
+            "target": "https://lucen-holo-flow.lovable.app/?q={search_term_string}",
+            "query-input": "required name=search_term_string"
+          }
         }
       ]
     }
