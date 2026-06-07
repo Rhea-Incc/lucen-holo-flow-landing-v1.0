@@ -42,16 +42,9 @@ export default function ImmersiveHero({
       </div>
 
       {/* Foreground — fully contained, never cropped or upscaled */}
-      <div className="absolute inset-0 flex items-center justify-center">
+      <div className="absolute inset-0 flex items-center justify-center p-4 sm:p-8">
         {resolvedType === 'video' ? (
-          <video
-            autoPlay
-            muted
-            loop
-            playsInline
-            src={src.startsWith('/media/') ? `https://qiuagqujrqlzkuxqfink.supabase.co/storage/v1/object/public/media${src.replace('/media', '')}` : src}
-            className="max-w-full max-h-full w-auto h-auto object-contain"
-          />
+          <OptimizedVideo src={src} priority className="max-w-full max-h-full w-auto h-auto object-contain" />
         ) : (
           <OptimizedImage src={src} alt={title} priority fit="contain" className="w-full h-full" />
         )}
