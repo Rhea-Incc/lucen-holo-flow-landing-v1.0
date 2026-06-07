@@ -15,10 +15,17 @@ interface OptimizedImageProps {
   priority?: boolean;
   width?: number;
   sizes?: string;
+  /** How the image fills its container. Defaults to 'cover'. Use 'contain' to never crop. */
+  fit?: 'cover' | 'contain';
+}
+  style?: React.CSSProperties;
+  priority?: boolean;
+  width?: number;
+  sizes?: string;
 }
 
 export function OptimizedImage({
-  src, alt, className = '', style, priority = false, width, sizes,
+  src, alt, className = '', style, priority = false, width, sizes, fit = 'cover',
 }: OptimizedImageProps) {
   const isCloudImage = src.startsWith('/media/') && isImagePath(src);
   const [, force] = useState(0);
@@ -85,7 +92,7 @@ export function OptimizedImage({
               decoding="async"
               fetchPriority={priority ? 'high' : 'auto'}
               onLoad={() => setLoaded(true)}
-              className={`w-full h-full object-cover transition-opacity duration-500 ${loaded ? 'opacity-100' : 'opacity-0'}`}
+              className={`w-full h-full ${fit === 'contain' ? 'object-contain' : 'object-cover'} transition-opacity duration-500 ${loaded ? 'opacity-100' : 'opacity-0'}`}
             />
           </picture>
         ) : (
@@ -96,7 +103,7 @@ export function OptimizedImage({
             decoding="async"
             fetchPriority={priority ? 'high' : 'auto'}
             onLoad={() => setLoaded(true)}
-            className={`w-full h-full object-cover transition-opacity duration-500 ${loaded ? 'opacity-100' : 'opacity-0'}`}
+            className={`w-full h-full ${fit === 'contain' ? 'object-contain' : 'object-cover'} transition-opacity duration-500 ${loaded ? 'opacity-100' : 'opacity-0'}`}
           />
         )
       )}
