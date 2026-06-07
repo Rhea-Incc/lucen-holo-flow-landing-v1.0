@@ -18,11 +18,6 @@ interface OptimizedImageProps {
   /** How the image fills its container. Defaults to 'cover'. Use 'contain' to never crop. */
   fit?: 'cover' | 'contain';
 }
-  style?: React.CSSProperties;
-  priority?: boolean;
-  width?: number;
-  sizes?: string;
-}
 
 export function OptimizedImage({
   src, alt, className = '', style, priority = false, width, sizes, fit = 'cover',
