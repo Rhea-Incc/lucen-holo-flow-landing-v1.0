@@ -77,18 +77,30 @@ export default function StaggeredMediaGrid({
                   isLastOdd ? 'col-span-2 md:col-span-1' : ''
                 }`}
               >
-                {type === 'video' ? (
-                  <OptimizedVideo
-                    src={item.src}
-                    className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-[1.04]"
-                  />
-                ) : (
-                  <OptimizedImage
-                    src={item.src}
-                    alt={item.caption ?? ''}
-                    className="absolute inset-0 w-full h-full transition-transform duration-1000 group-hover:scale-[1.04]"
-                  />
-                )}
+                {/* Blurred backdrop — fills tile without distorting subject */}
+                <div className="absolute inset-0 scale-110 blur-2xl opacity-50">
+                  {type === 'video' ? (
+                    <OptimizedVideo src={item.src} className="w-full h-full object-cover" />
+                  ) : (
+                    <OptimizedImage src={item.src} alt="" className="absolute inset-0 w-full h-full" />
+                  )}
+                </div>
+                {/* Foreground — contained, never cropped or zoomed */}
+                <div className="absolute inset-0 flex items-center justify-center p-2 sm:p-3">
+                  {type === 'video' ? (
+                    <OptimizedVideo
+                      src={item.src}
+                      className="max-w-full max-h-full w-auto h-auto object-contain"
+                    />
+                  ) : (
+                    <OptimizedImage
+                      src={item.src}
+                      alt={item.caption ?? ''}
+                      fit="contain"
+                      className="w-full h-full"
+                    />
+                  )}
+                </div>
                 <div className="absolute inset-0 bg-gradient-to-t from-background/60 via-transparent to-transparent pointer-events-none" />
                 {item.caption && (
                   <div className="absolute inset-x-0 bottom-0 p-4">

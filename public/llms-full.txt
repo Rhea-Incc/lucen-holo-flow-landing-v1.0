@@ -1,0 +1,36 @@
+# Lucen — full content for AI ingestion
+# This file is an expanded, machine-friendly version of llms.txt.
+
+See https://lucen-holo-flow.lovable.app/llms.txt for the canonical index.
+
+## About Lucen
+
+Lucen designs and operates a real-time holographic interface system. Each Lucen
+installation combines transparent LED, anamorphic, volumetric or projection
+hardware with the Lucen Engine — a live analytics layer that measures dwell
+time, attention seconds, and conversion lift for every screen on the network.
+
+## Contact
+
+- Email: holograms@lucene.co
+- Phone: +254 727 750 097
+- Hours: Mon–Fri, 8 AM – 6 PM EAT
+- Web: https://lucen-holo-flow.lovable.app/contact
+
+## Capabilities (one-liners)
+
+- Hardware: transparent LED, anamorphic, volumetric, fan, pepper's-ghost, projection
+- Software: Lucen Engine — live dwell, attention, conversion analytics
+- Services: site survey, content design, fabrication, install, network operation
+- Models: purchase, long-term rental, short-term rental, campaign, DOOH analytics
+
+## Industries
+
+retail, real-estate, automotive, hospitality, events, trade-shows, corporate,
+DOOH, transit, museums.
+
+## Brand
+
+- Name: Lucen (legacy email domain lucene.co)
+- Tagline: A real-time holographic interface where media, motion, and light form a continuous intelligent system.
+- Tone: precision, restraint, cinematic.
