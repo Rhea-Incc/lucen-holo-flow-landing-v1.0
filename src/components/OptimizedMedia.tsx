@@ -14,13 +14,17 @@ interface OptimizedImageProps {
   style?: React.CSSProperties;
   priority?: boolean;
   width?: number;
+  /** Intrinsic height for CLS reservation (paired with width). */
+  height?: number;
   sizes?: string;
   /** How the image fills its container. Defaults to 'cover'. Use 'contain' to never crop. */
   fit?: 'cover' | 'contain';
+  /** When true, image will not be upscaled beyond its intrinsic resolution. */
+  noUpscale?: boolean;
 }
 
 export function OptimizedImage({
-  src, alt, className = '', style, priority = false, width, sizes, fit = 'cover',
+  src, alt, className = '', style, priority = false, width, height, sizes, fit = 'cover', noUpscale = false,
 }: OptimizedImageProps) {
   const isCloudImage = src.startsWith('/media/') && isImagePath(src);
   const [, force] = useState(0);
@@ -71,8 +75,13 @@ export function OptimizedImage({
     return () => { document.head.removeChild(link); };
   }, [fallbackSrc, priority, webpSet, defaultSizes]);
 
+  const upscaleStyle: React.CSSProperties | undefined = noUpscale && width
+    ? { maxWidth: `${width}px`, maxHeight: height ? `${height}px` : undefined, margin: '0 auto' }
+    : undefined;
+  const mergedStyle = { ...(style || {}), ...(upscaleStyle || {}) };
+
   return (
-    <div ref={containerRef} className={className} style={style}>
+    <div ref={containerRef} className={className} style={mergedStyle}>
       {inView && (
         isCloudImage ? (
           <picture>
@@ -83,6 +92,8 @@ export function OptimizedImage({
               srcSet={jpegSet}
               sizes={defaultSizes}
               alt={alt}
+              width={width}
+              height={height}
               loading={priority ? 'eager' : 'lazy'}
               decoding="async"
               fetchPriority={priority ? 'high' : 'auto'}
@@ -94,6 +105,8 @@ export function OptimizedImage({
           <img
             src={fallbackSrc}
             alt={alt}
+            width={width}
+            height={height}
             loading={priority ? 'eager' : 'lazy'}
             decoding="async"
             fetchPriority={priority ? 'high' : 'auto'}
