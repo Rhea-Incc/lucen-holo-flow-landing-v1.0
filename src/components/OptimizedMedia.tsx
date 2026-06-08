@@ -14,13 +14,17 @@ interface OptimizedImageProps {
   style?: React.CSSProperties;
   priority?: boolean;
   width?: number;
+  /** Intrinsic height for CLS reservation (paired with width). */
+  height?: number;
   sizes?: string;
   /** How the image fills its container. Defaults to 'cover'. Use 'contain' to never crop. */
   fit?: 'cover' | 'contain';
+  /** When true, image will not be upscaled beyond its intrinsic resolution. */
+  noUpscale?: boolean;
 }
 
 export function OptimizedImage({
-  src, alt, className = '', style, priority = false, width, sizes, fit = 'cover',
+  src, alt, className = '', style, priority = false, width, height, sizes, fit = 'cover', noUpscale = false,
 }: OptimizedImageProps) {
   const isCloudImage = src.startsWith('/media/') && isImagePath(src);
   const [, force] = useState(0);
