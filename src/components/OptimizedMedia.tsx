@@ -75,8 +75,13 @@ export function OptimizedImage({
     return () => { document.head.removeChild(link); };
   }, [fallbackSrc, priority, webpSet, defaultSizes]);
 
+  const upscaleStyle: React.CSSProperties | undefined = noUpscale && width
+    ? { maxWidth: `${width}px`, maxHeight: height ? `${height}px` : undefined, margin: '0 auto' }
+    : undefined;
+  const mergedStyle = { ...(style || {}), ...(upscaleStyle || {}) };
+
   return (
-    <div ref={containerRef} className={className} style={style}>
+    <div ref={containerRef} className={className} style={mergedStyle}>
       {inView && (
         isCloudImage ? (
           <picture>
@@ -87,6 +92,8 @@ export function OptimizedImage({
               srcSet={jpegSet}
               sizes={defaultSizes}
               alt={alt}
+              width={width}
+              height={height}
               loading={priority ? 'eager' : 'lazy'}
               decoding="async"
               fetchPriority={priority ? 'high' : 'auto'}
@@ -98,6 +105,8 @@ export function OptimizedImage({
           <img
             src={fallbackSrc}
             alt={alt}
+            width={width}
+            height={height}
             loading={priority ? 'eager' : 'lazy'}
             decoding="async"
             fetchPriority={priority ? 'high' : 'auto'}
