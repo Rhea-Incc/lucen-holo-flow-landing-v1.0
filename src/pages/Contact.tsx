@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion';
 import { useState, useEffect } from 'react';
 import { useSearchParams, Link } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
 import LucenHeader from '@/components/LucenHeader';
 import ParticleField from '@/components/ParticleField';
 import CursorGlow from '@/components/CursorGlow';
@@ -17,6 +18,75 @@ import { industries } from '@/data/industries';
 import { useCases } from '@/data/usecases';
 
 const SUPPORT_EMAIL = 'holograms@lucene.co';
+const SITE_URL = 'https://lucen-holo-flow.lovable.app';
+
+const CONTACT_JSONLD = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'ContactPage',
+      '@id': `${SITE_URL}/contact#contactpage`,
+      url: `${SITE_URL}/contact`,
+      name: 'Contact Lucen — Talk to a Holographic Specialist',
+      description:
+        'Reach the Lucen team to scope a holographic deployment, request a demo, or schedule a callback with a specialist.',
+      inLanguage: 'en',
+      isPartOf: { '@id': `${SITE_URL}#website` },
+      mainEntity: { '@id': `${SITE_URL}#org` },
+    },
+    {
+      '@type': 'Organization',
+      '@id': `${SITE_URL}#org`,
+      name: 'Lucen',
+      url: SITE_URL,
+      email: SUPPORT_EMAIL,
+      telephone: '+254-727-750-097',
+      contactPoint: [
+        {
+          '@type': 'ContactPoint',
+          telephone: '+254-727-750-097',
+          email: SUPPORT_EMAIL,
+          contactType: 'sales',
+          areaServed: ['KE', 'AE', 'GB', 'US', 'Global'],
+          availableLanguage: ['en'],
+          hoursAvailable: {
+            '@type': 'OpeningHoursSpecification',
+            dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+            opens: '08:00',
+            closes: '18:00',
+          },
+        },
+        {
+          '@type': 'ContactPoint',
+          email: SUPPORT_EMAIL,
+          contactType: 'customer support',
+          availableLanguage: ['en'],
+        },
+      ],
+    },
+    {
+      '@type': 'Service',
+      '@id': `${SITE_URL}/contact#service`,
+      serviceType: 'Holographic display deployment & content production',
+      provider: { '@id': `${SITE_URL}#org` },
+      areaServed: 'Worldwide',
+      audience: { '@type': 'BusinessAudience', audienceType: 'Brands, retailers, venues, agencies' },
+      hasOfferCatalog: {
+        '@type': 'OfferCatalog',
+        name: 'Lucen Holographic Services',
+        itemListElement: [
+          { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Retail & DOOH holographic activations' } },
+          { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Automotive showroom holograms' } },
+          { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Trade show immersive booths' } },
+          { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Corporate lobby installations' } },
+          { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Events & live productions' } },
+          { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Real estate hologram experiences' } },
+          { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Hospitality holographic environments' } },
+        ],
+      },
+    },
+  ],
+};
 
 export default function Contact() {
   const [params] = useSearchParams();
