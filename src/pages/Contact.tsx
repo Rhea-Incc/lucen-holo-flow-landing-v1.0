@@ -237,6 +237,9 @@ export default function Contact() {
                   src="/media/contact-beside-form.jpg"
                   alt="Holographic locomotive installation"
                   fit="contain"
+                  width={1200}
+                  height={1200}
+                  sizes="(max-width: 1024px) 100vw, 480px"
                   className="absolute inset-0 w-full h-full"
                 />
               </div>
