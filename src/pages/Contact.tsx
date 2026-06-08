@@ -165,6 +165,9 @@ export default function Contact() {
         description="Reach the Lucen team to scope a holographic deployment, request a demo, or schedule a callback with a specialist."
         path="/contact"
       />
+      <Helmet>
+        <script type="application/ld+json">{JSON.stringify(CONTACT_JSONLD)}</script>
+      </Helmet>
       <ParticleField />
       <CursorGlow />
       <LucenHeader />
@@ -176,33 +179,42 @@ export default function Contact() {
         eyebrow="Reach Out"
         title="Let's scope your holographic deployment."
         subtitle="Share a few details and a Lucen specialist will respond within one business day."
-        accent="/media/contact-beside-form.jpg"
       />
 
-      {/* Sticky-layered scrollytelling — mirrors Use Case + Industry pages */}
+      {/* Sticky-layered scrollytelling — frame orientation matches each media's intrinsic aspect */}
       <StickyScrollytell
         label="Working with Lucen"
         panels={[
           {
             media: '/media/contact-hero.jpg',
+            orientation: 'landscape',
+            mediaWidth: 1920,
+            mediaHeight: 850,
             eyebrow: 'Step 01',
             heading: 'Tell us the brief',
             body: 'Venue, audience, dwell time, brand outcomes. We translate it into a holographic scope you can sign off in days.',
           },
           {
             media: '/media/scale-your-message.mp4',
+            orientation: 'landscape',
+            mediaWidth: 1200,
+            mediaHeight: 900,
             eyebrow: 'Step 02',
             heading: 'Pilot in 4–6 weeks',
             body: 'A specialist pairs with your team for survey, content design, and a working pilot at your venue or event.',
           },
           {
             media: '/media/corporate_lobby-2.mp4',
+            orientation: 'portrait',
+            mediaWidth: 720,
+            mediaHeight: 1280,
             eyebrow: 'Step 03',
             heading: 'Operate the Lucen Engine',
             body: 'Live dwell, attention and conversion analytics — we tune content weekly so every screen keeps earning attention.',
           },
         ] satisfies ScrollPanel[]}
       />
+
 
 
       {/* Form + Side Image */}
