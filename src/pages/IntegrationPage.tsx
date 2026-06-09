@@ -3,6 +3,8 @@ import { Link, useParams } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { ArrowLeft, ArrowRight, Check } from 'lucide-react';
 import LucenHeader from '@/components/LucenHeader';
+import LucenFooter from '@/components/LucenFooter';
+
 import Seo from '@/components/Seo';
 import ParticleField from '@/components/ParticleField';
 import CursorGlow from '@/components/CursorGlow';
