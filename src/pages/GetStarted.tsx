@@ -59,6 +59,8 @@ export default function GetStarted() {
           </form>
         </motion.div>
       </div>
+      <LucenFooter />
     </div>
   );
 }
+
