@@ -1,3 +1,4 @@
+import LucenFooter from '@/components/LucenFooter';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import Seo from '@/components/Seo';

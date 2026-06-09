@@ -1,3 +1,4 @@
+import LucenFooter from '@/components/LucenFooter';
 import { motion } from 'framer-motion';
 import LucenHeader from '@/components/LucenHeader';
 import Seo from '@/components/Seo';
