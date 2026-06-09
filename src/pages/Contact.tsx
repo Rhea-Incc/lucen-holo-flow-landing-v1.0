@@ -1,3 +1,4 @@
+import LucenFooter from '@/components/LucenFooter';
 import { motion } from 'framer-motion';
 import { useState, useEffect } from 'react';
 import { useSearchParams, Link } from 'react-router-dom';
@@ -420,6 +421,8 @@ export default function Contact() {
           </motion.div>
         </div>
       </section>
+      <LucenFooter />
     </div>
   );
 }
+

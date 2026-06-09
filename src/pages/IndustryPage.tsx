@@ -1,3 +1,4 @@
+import LucenFooter from '@/components/LucenFooter';
 import { useParams, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { industries } from '@/data/industries';
@@ -21,10 +22,12 @@ export default function IndustryPage() {
         <div className="text-center pt-20">
           <h1 className="font-display text-3xl text-foreground mb-4">Industry Not Found</h1>
           <Link to="/" className="text-primary hover:underline">Back to Home</Link>
-        </div>
       </div>
-    );
-  }
+      <LucenFooter />
+    </div>
+  );
+}
+
 
   const relatedUseCases = useCases.filter((u) => u.industrySlug === industry.slug);
   const heroMedia = industry.videos[0] ?? industry.images[0] ?? industry.heroImage;

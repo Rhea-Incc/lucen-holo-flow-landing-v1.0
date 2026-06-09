@@ -1,4 +1,6 @@
 import { useLocation } from "react-router-dom";
+import LucenFooter from '@/components/LucenFooter';
+
 import { useEffect } from "react";
 
 const NotFound = () => {
@@ -17,7 +19,9 @@ const NotFound = () => {
           Return to Home
         </a>
       </div>
+      <LucenFooter />
     </div>
+
   );
 };
 

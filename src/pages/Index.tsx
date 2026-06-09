@@ -16,6 +16,8 @@ import LucenPartners from '@/components/LucenPartners';
 import LucenClosing from '@/components/LucenClosing';
 import WhatsAppButton from '@/components/WhatsAppButton';
 import ScrollSection from '@/components/ScrollSection';
+import LucenFooter from '@/components/LucenFooter';
+
 
 const Index = () => {
   return (
@@ -75,11 +77,8 @@ const Index = () => {
         <LucenClosing />
       </ScrollSection>
 
-      <footer className="relative py-16 px-6 text-center">
-        <p className="text-muted-foreground text-xs font-display tracking-[0.2em] uppercase">
-          Lucen Interface System
-        </p>
-      </footer>
+      <LucenFooter />
+
     </div>
   );
 };
