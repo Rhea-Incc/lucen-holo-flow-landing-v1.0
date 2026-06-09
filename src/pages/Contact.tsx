@@ -1,12 +1,16 @@
+import LucenFooter from '@/components/LucenFooter';
 import { motion } from 'framer-motion';
 import { useState, useEffect } from 'react';
 import { useSearchParams, Link } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
 import LucenHeader from '@/components/LucenHeader';
 import ParticleField from '@/components/ParticleField';
 import CursorGlow from '@/components/CursorGlow';
 import Seo from '@/components/Seo';
 import WhatsAppButton from '@/components/WhatsAppButton';
 import { OptimizedImage } from '@/components/OptimizedMedia';
+import StickyScrollytell, { ScrollPanel } from '@/components/StickyScrollytell';
+import ImmersiveHero from '@/components/ImmersiveHero';
 import { Phone, MessageCircle, PhoneCall, Mail, Loader2, CheckCircle } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
@@ -15,6 +19,75 @@ import { industries } from '@/data/industries';
 import { useCases } from '@/data/usecases';
 
 const SUPPORT_EMAIL = 'holograms@lucene.co';
+const SITE_URL = 'https://lucen-holo-flow.lovable.app';
+
+const CONTACT_JSONLD = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'ContactPage',
+      '@id': `${SITE_URL}/contact#contactpage`,
+      url: `${SITE_URL}/contact`,
+      name: 'Contact Lucen — Talk to a Holographic Specialist',
+      description:
+        'Reach the Lucen team to scope a holographic deployment, request a demo, or schedule a callback with a specialist.',
+      inLanguage: 'en',
+      isPartOf: { '@id': `${SITE_URL}#website` },
+      mainEntity: { '@id': `${SITE_URL}#org` },
+    },
+    {
+      '@type': 'Organization',
+      '@id': `${SITE_URL}#org`,
+      name: 'Lucen',
+      url: SITE_URL,
+      email: SUPPORT_EMAIL,
+      telephone: '+254-727-750-097',
+      contactPoint: [
+        {
+          '@type': 'ContactPoint',
+          telephone: '+254-727-750-097',
+          email: SUPPORT_EMAIL,
+          contactType: 'sales',
+          areaServed: ['KE', 'AE', 'GB', 'US', 'Global'],
+          availableLanguage: ['en'],
+          hoursAvailable: {
+            '@type': 'OpeningHoursSpecification',
+            dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+            opens: '08:00',
+            closes: '18:00',
+          },
+        },
+        {
+          '@type': 'ContactPoint',
+          email: SUPPORT_EMAIL,
+          contactType: 'customer support',
+          availableLanguage: ['en'],
+        },
+      ],
+    },
+    {
+      '@type': 'Service',
+      '@id': `${SITE_URL}/contact#service`,
+      serviceType: 'Holographic display deployment & content production',
+      provider: { '@id': `${SITE_URL}#org` },
+      areaServed: 'Worldwide',
+      audience: { '@type': 'BusinessAudience', audienceType: 'Brands, retailers, venues, agencies' },
+      hasOfferCatalog: {
+        '@type': 'OfferCatalog',
+        name: 'Lucen Holographic Services',
+        itemListElement: [
+          { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Retail & DOOH holographic activations' } },
+          { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Automotive showroom holograms' } },
+          { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Trade show immersive booths' } },
+          { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Corporate lobby installations' } },
+          { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Events & live productions' } },
+          { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Real estate hologram experiences' } },
+          { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Hospitality holographic environments' } },
+        ],
+      },
+    },
+  ],
+};
 
 export default function Contact() {
   const [params] = useSearchParams();
@@ -93,40 +166,57 @@ export default function Contact() {
         description="Reach the Lucen team to scope a holographic deployment, request a demo, or schedule a callback with a specialist."
         path="/contact"
       />
+      <Helmet>
+        <script type="application/ld+json">{JSON.stringify(CONTACT_JSONLD)}</script>
+      </Helmet>
       <ParticleField />
       <CursorGlow />
       <LucenHeader />
       <WhatsAppButton />
 
-      {/* Hero */}
-      <section className="relative pt-24 pb-12">
-        <div className="relative h-[44vh] min-h-[320px] max-h-[520px] w-full overflow-hidden">
-          <OptimizedImage
-            src="/media/contact-hero.jpg"
-            alt="Lucen network hero"
-            priority
-            className="absolute inset-0 w-full h-full"
-          />
-          <div className="absolute inset-0 bg-gradient-to-b from-background/40 via-background/30 to-background" />
-          <div className="absolute inset-0 flex items-end">
-            <div className="max-w-6xl mx-auto px-6 pb-12 w-full">
-              <motion.div
-                initial={{ opacity: 0, y: 20, filter: 'blur(10px)' }}
-                animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
-                transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-              >
-                <p className="text-sm font-display tracking-[0.3em] uppercase text-primary mb-3">Reach Out</p>
-                <h1 className="font-display text-4xl sm:text-6xl font-bold tracking-tight text-foreground max-w-3xl">
-                  Let’s scope your holographic deployment.
-                </h1>
-                <p className="text-muted-foreground font-body text-base sm:text-lg mt-4 max-w-2xl">
-                  Share a few details and a Lucen specialist will respond within one business day.
-                </p>
-              </motion.div>
-            </div>
-          </div>
-        </div>
-      </section>
+      {/* Immersive Hero */}
+      <ImmersiveHero
+        src="/media/contact-hero.jpg"
+        eyebrow="Reach Out"
+        title="Let's scope your holographic deployment."
+        subtitle="Share a few details and a Lucen specialist will respond within one business day."
+      />
+
+      {/* Sticky-layered scrollytelling — frame orientation matches each media's intrinsic aspect */}
+      <StickyScrollytell
+        label="Working with Lucen"
+        panels={[
+          {
+            media: '/media/contact-hero.jpg',
+            orientation: 'landscape',
+            mediaWidth: 1920,
+            mediaHeight: 850,
+            eyebrow: 'Step 01',
+            heading: 'Tell us the brief',
+            body: 'Venue, audience, dwell time, brand outcomes. We translate it into a holographic scope you can sign off in days.',
+          },
+          {
+            media: '/media/scale-your-message.mp4',
+            orientation: 'landscape',
+            mediaWidth: 1200,
+            mediaHeight: 900,
+            eyebrow: 'Step 02',
+            heading: 'Pilot in 4–6 weeks',
+            body: 'A specialist pairs with your team for survey, content design, and a working pilot at your venue or event.',
+          },
+          {
+            media: '/media/corporate_lobby-2.mp4',
+            orientation: 'portrait',
+            mediaWidth: 720,
+            mediaHeight: 1280,
+            eyebrow: 'Step 03',
+            heading: 'Operate the Lucen Engine',
+            body: 'Live dwell, attention and conversion analytics — we tune content weekly so every screen keeps earning attention.',
+          },
+        ] satisfies ScrollPanel[]}
+      />
+
+
 
       {/* Form + Side Image */}
       <section className="px-6 pb-24">
@@ -140,11 +230,18 @@ export default function Contact() {
             className="lg:col-span-5 lg:sticky lg:top-28 self-start"
           >
             <div className="glass-panel-elevated glow-edge overflow-hidden">
-              <div className="aspect-square w-full bg-black/40">
+              <div className="relative aspect-square w-full bg-black/40">
+                <div className="absolute inset-0 scale-110 blur-2xl opacity-50">
+                  <OptimizedImage src="/media/contact-beside-form.jpg" alt="" className="absolute inset-0 w-full h-full" />
+                </div>
                 <OptimizedImage
                   src="/media/contact-beside-form.jpg"
                   alt="Holographic locomotive installation"
-                  className="w-full h-full"
+                  fit="contain"
+                  width={1200}
+                  height={1200}
+                  sizes="(max-width: 1024px) 100vw, 480px"
+                  className="absolute inset-0 w-full h-full"
                 />
               </div>
               <div className="p-6 space-y-4">
@@ -324,6 +421,8 @@ export default function Contact() {
           </motion.div>
         </div>
       </section>
+      <LucenFooter />
     </div>
   );
 }
+

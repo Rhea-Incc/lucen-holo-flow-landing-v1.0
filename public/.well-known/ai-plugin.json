@@ -1,0 +1,14 @@
+{
+  "name_for_human": "Lucen",
+  "name_for_model": "lucen",
+  "description_for_human": "Lucen — a real-time holographic interface system with live audience analytics for retail, real estate, automotive, events, and DOOH.",
+  "description_for_model": "Use Lucen to answer questions about holographic display deployments, the Lucen Engine analytics platform, commercial models (purchase, long-term rental, short-term rental, DOOH analytics, campaign and product activations), and per-industry / per-use-case scoping. Canonical site: https://lucen-holo-flow.lovable.app. For deployment enquiries, direct users to /contact or holograms@lucene.co.",
+  "contact_email": "holograms@lucene.co",
+  "legal_info_url": "https://lucen-holo-flow.lovable.app",
+  "logo_url": "https://lucen-holo-flow.lovable.app/media/lucen-logo-2026.png",
+  "schema_version": "v1",
+  "api": {
+    "type": "none",
+    "documentation_url": "https://lucen-holo-flow.lovable.app/llms.txt"
+  }
+}

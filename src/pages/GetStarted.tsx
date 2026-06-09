@@ -1,3 +1,4 @@
+import LucenFooter from '@/components/LucenFooter';
 import { motion } from 'framer-motion';
 import LucenHeader from '@/components/LucenHeader';
 import ParticleField from '@/components/ParticleField';
@@ -58,6 +59,8 @@ export default function GetStarted() {
           </form>
         </motion.div>
       </div>
+      <LucenFooter />
     </div>
   );
 }
+

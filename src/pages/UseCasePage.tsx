@@ -1,3 +1,4 @@
+import LucenFooter from '@/components/LucenFooter';
 import { useParams, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { useCases } from '@/data/usecases';
@@ -21,10 +22,12 @@ export default function UseCasePage() {
         <div className="text-center pt-20">
           <h1 className="font-display text-3xl text-foreground mb-4">Use Case Not Found</h1>
           <Link to="/" className="text-primary hover:underline">Back to Home</Link>
-        </div>
       </div>
-    );
-  }
+      <LucenFooter />
+    </div>
+  );
+}
+
 
   const industry = industries.find((i) => i.slug === useCase.industrySlug);
   const heroMedia = useCase.videos[0] ?? useCase.images[0] ?? useCase.image;

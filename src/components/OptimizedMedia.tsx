@@ -14,12 +14,22 @@ interface OptimizedImageProps {
   style?: React.CSSProperties;
   priority?: boolean;
   width?: number;
+  /** Intrinsic height for CLS reservation (paired with width). */
+  height?: number;
   sizes?: string;
+  /** How the image fills its container. Defaults to 'cover'. Use 'contain' to never crop. */
+  fit?: 'cover' | 'contain';
+  /** When true, image will not be upscaled beyond its intrinsic resolution. */
+  noUpscale?: boolean;
 }
 
 export function OptimizedImage({
-  src, alt, className = '', style, priority = false, width, sizes,
+  src, alt, className = '', style, priority = false, width, height, sizes, fit = 'cover', noUpscale,
 }: OptimizedImageProps) {
+  // Global policy: never upscale beyond intrinsic resolution when we know it.
+  // Caller can pass noUpscale={false} to opt out for true full-bleed art-directed backdrops.
+  const enforceNoUpscale = noUpscale ?? !!width;
+
   const isCloudImage = src.startsWith('/media/') && isImagePath(src);
   const [, force] = useState(0);
   const [loaded, setLoaded] = useState(false);
@@ -69,8 +79,13 @@ export function OptimizedImage({
     return () => { document.head.removeChild(link); };
   }, [fallbackSrc, priority, webpSet, defaultSizes]);
 
+  const upscaleStyle: React.CSSProperties | undefined = enforceNoUpscale && width
+    ? { maxWidth: `${width}px`, maxHeight: height ? `${height}px` : undefined, margin: '0 auto' }
+    : undefined;
+  const mergedStyle = { ...(style || {}), ...(upscaleStyle || {}) };
+
   return (
-    <div ref={containerRef} className={className} style={style}>
+    <div ref={containerRef} className={className} style={mergedStyle}>
       {inView && (
         isCloudImage ? (
           <picture>
@@ -81,22 +96,26 @@ export function OptimizedImage({
               srcSet={jpegSet}
               sizes={defaultSizes}
               alt={alt}
+              width={width}
+              height={height}
               loading={priority ? 'eager' : 'lazy'}
               decoding="async"
               fetchPriority={priority ? 'high' : 'auto'}
               onLoad={() => setLoaded(true)}
-              className={`w-full h-full object-cover transition-opacity duration-500 ${loaded ? 'opacity-100' : 'opacity-0'}`}
+              className={`w-full h-full ${fit === 'contain' ? 'object-contain' : 'object-cover'} transition-opacity duration-500 ${loaded ? 'opacity-100' : 'opacity-0'}`}
             />
           </picture>
         ) : (
           <img
             src={fallbackSrc}
             alt={alt}
+            width={width}
+            height={height}
             loading={priority ? 'eager' : 'lazy'}
             decoding="async"
             fetchPriority={priority ? 'high' : 'auto'}
             onLoad={() => setLoaded(true)}
-            className={`w-full h-full object-cover transition-opacity duration-500 ${loaded ? 'opacity-100' : 'opacity-0'}`}
+            className={`w-full h-full ${fit === 'contain' ? 'object-contain' : 'object-cover'} transition-opacity duration-500 ${loaded ? 'opacity-100' : 'opacity-0'}`}
           />
         )
       )}

@@ -1,3 +1,4 @@
+import LucenFooter from '@/components/LucenFooter';
 import { motion } from 'framer-motion';
 import LucenHeader from '@/components/LucenHeader';
 import Seo from '@/components/Seo';
@@ -110,11 +111,8 @@ export default function About() {
         </motion.div>
       </section>
 
-      <footer className="relative py-16 px-6 text-center">
-        <p className="text-muted-foreground text-xs font-display tracking-[0.2em] uppercase">
-          Lucen Interface System
-        </p>
-      </footer>
+      <LucenFooter />
+
     </div>
   );
 }
