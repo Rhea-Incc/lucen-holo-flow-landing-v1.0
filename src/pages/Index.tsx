@@ -16,6 +16,8 @@ import LucenPartners from '@/components/LucenPartners';
 import LucenClosing from '@/components/LucenClosing';
 import WhatsAppButton from '@/components/WhatsAppButton';
 import ScrollSection from '@/components/ScrollSection';
+import LucenFooter from '@/components/LucenFooter';
+
 
 const Index = () => {
   return (
