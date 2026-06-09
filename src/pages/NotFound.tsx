@@ -17,7 +17,9 @@ const NotFound = () => {
           Return to Home
         </a>
       </div>
+      <LucenFooter />
     </div>
+
   );
 };
 

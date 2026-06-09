@@ -195,7 +195,9 @@ export default function IntegrationPage() {
           </div>
         </div>
       </main>
+      <LucenFooter />
     </div>
+
   );
 }
 
