@@ -24,8 +24,12 @@ interface OptimizedImageProps {
 }
 
 export function OptimizedImage({
-  src, alt, className = '', style, priority = false, width, height, sizes, fit = 'cover', noUpscale = false,
+  src, alt, className = '', style, priority = false, width, height, sizes, fit = 'cover', noUpscale,
 }: OptimizedImageProps) {
+  // Global policy: never upscale beyond intrinsic resolution when we know it.
+  // Caller can pass noUpscale={false} to opt out for true full-bleed art-directed backdrops.
+  const enforceNoUpscale = noUpscale ?? !!width;
+
   const isCloudImage = src.startsWith('/media/') && isImagePath(src);
   const [, force] = useState(0);
   const [loaded, setLoaded] = useState(false);
@@ -75,7 +79,7 @@ export function OptimizedImage({
     return () => { document.head.removeChild(link); };
   }, [fallbackSrc, priority, webpSet, defaultSizes]);
 
-  const upscaleStyle: React.CSSProperties | undefined = noUpscale && width
+  const upscaleStyle: React.CSSProperties | undefined = enforceNoUpscale && width
     ? { maxWidth: `${width}px`, maxHeight: height ? `${height}px` : undefined, margin: '0 auto' }
     : undefined;
   const mergedStyle = { ...(style || {}), ...(upscaleStyle || {}) };
