@@ -68,7 +68,7 @@ function StickyLayer({
     : 'absolute inset-0';
 
   return (
-    <motion.div style={{ opacity }} className="absolute inset-0">
+    <motion.div style={{ opacity, scale, y: yPan }} className="absolute inset-0 will-change-transform">
       {/* Blurred backdrop fills the entire viewport behind for depth */}
       <div className="absolute inset-0 scale-110 blur-2xl opacity-50">
         {type === 'video' ? (
