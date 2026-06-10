@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
 import { toast } from "@/hooks/use-toast";
 import { Trash2, RefreshCw, LogOut } from "lucide-react";
+import TelemetryPanel from "@/components/TelemetryPanel";
 
 interface Submission {
   id: string;
