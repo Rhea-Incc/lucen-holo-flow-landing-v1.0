@@ -40,10 +40,22 @@ function StickyLayer({
   const segment = 1 / total;
   const start = index * segment;
   const end = start + segment;
+  // Wider, softer cross-fade overlap for a deliberate, cinematic flow
+  const overlap = segment * 0.55;
   const opacity = useTransform(
     progress,
-    [Math.max(0, start - segment * 0.15), start + segment * 0.15, end - segment * 0.05, end + segment * 0.1],
+    [Math.max(0, start - overlap), start + segment * 0.25, end - segment * 0.05, Math.min(1, end + overlap)],
     [0, 1, 1, 0],
+  );
+  const scale = useTransform(
+    progress,
+    [Math.max(0, start - overlap), start + segment * 0.5, Math.min(1, end + overlap)],
+    [1.08, 1.0, 0.97],
+  );
+  const yPan = useTransform(
+    progress,
+    [Math.max(0, start - overlap), Math.min(1, end + overlap)],
+    ['2%', '-2%'],
   );
   const type = resolveType(panel);
   const isPortrait = panel.orientation === 'portrait';
