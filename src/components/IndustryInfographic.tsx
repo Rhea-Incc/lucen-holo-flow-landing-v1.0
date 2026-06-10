@@ -94,7 +94,7 @@ export default function IndustryInfographic({ industryName, metrics }: Props) {
                   className="glass-panel-elevated glow-edge p-5"
                 >
                   <p className="font-display text-3xl sm:text-4xl font-semibold text-primary text-glow leading-none">
-                    {parsed ? <Counter {...parsed} /> : m.value}
+                    {parsed ? <Counter target={parsed.num} prefix={parsed.prefix} suffix={parsed.suffix} /> : m.value}
                   </p>
                   <p className="text-muted-foreground text-[11px] uppercase tracking-[0.2em] mt-3">{m.label}</p>
                 </motion.div>
