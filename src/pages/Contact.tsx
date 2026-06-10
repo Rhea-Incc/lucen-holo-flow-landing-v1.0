@@ -174,13 +174,38 @@ export default function Contact() {
       <LucenHeader />
       <WhatsAppButton />
 
-      {/* Immersive Hero */}
-      <ImmersiveHero
-        src="/media/contact-hero.jpg"
-        eyebrow="Reach Out"
-        title="Let's scope your holographic deployment."
-        subtitle="Share a few details and a Lucen specialist will respond within one business day."
-      />
+      {/* Landscape glassmorphic hero — full-bleed, sits below fixed header */}
+      <section className="relative w-full pt-16">
+        <div className="relative w-screen left-1/2 right-1/2 -mx-[50vw] h-[68vh] min-h-[420px] max-h-[760px] overflow-hidden">
+          <OptimizedImage
+            src="/media/contact-hero.jpg"
+            alt="Holographic deployment by Lucen"
+            priority
+            fit="cover"
+            className="absolute inset-0 w-full h-full"
+          />
+          <div className="absolute inset-0 bg-gradient-to-b from-background/30 via-background/10 to-background/95 pointer-events-none" />
+          <div className="absolute inset-0 flex items-end">
+            <div className="max-w-7xl w-full mx-auto px-6 pb-12 sm:pb-16">
+              <motion.div
+                initial={{ opacity: 0, y: 24, filter: 'blur(12px)' }}
+                animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+                transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
+                className="glass-panel-elevated glow-edge p-6 sm:p-10 max-w-2xl"
+                style={{ backdropFilter: 'blur(22px)', WebkitBackdropFilter: 'blur(22px)' }}
+              >
+                <p className="text-xs sm:text-sm font-display tracking-[0.3em] uppercase text-primary mb-3">Reach Out</p>
+                <h1 className="font-display text-3xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-foreground">
+                  Let's scope your holographic deployment.
+                </h1>
+                <p className="text-muted-foreground font-body text-base sm:text-lg mt-4">
+                  Share a few details and a Lucen specialist will respond within one business day.
+                </p>
+              </motion.div>
+            </div>
+          </div>
+        </div>
+      </section>
 
       {/* Sticky-layered scrollytelling — frame orientation matches each media's intrinsic aspect */}
       <StickyScrollytell
@@ -315,88 +340,36 @@ export default function Contact() {
                     <label className={labelClass}>Full name</label>
                     <input className={inputClass} placeholder="Your name" value={name} onChange={(e) => setName(e.target.value)} required />
                   </div>
-                  <div>
-                    <label className={labelClass}>Company</label>
-                    <input className={inputClass} placeholder="Organization" value={company} onChange={(e) => setCompany(e.target.value)} />
-                  </div>
                   {mode === 'message' ? (
-                    <>
-                      <div>
-                        <label className={labelClass}>Email</label>
-                        <input type="email" className={inputClass} placeholder="your@email.com" value={email} onChange={(e) => setEmail(e.target.value)} required />
-                      </div>
-                      <div>
-                        <label className={labelClass}>Phone (optional)</label>
-                        <input type="tel" className={inputClass} placeholder="+254 7XX XXX XXX" value={phone} onChange={(e) => setPhone(e.target.value)} />
-                      </div>
-                    </>
+                    <div>
+                      <label className={labelClass}>Email</label>
+                      <input type="email" className={inputClass} placeholder="your@email.com" value={email} onChange={(e) => setEmail(e.target.value)} required />
+                    </div>
                   ) : (
+                    <div>
+                      <label className={labelClass}>Phone</label>
+                      <input type="tel" className={inputClass} placeholder="+254 7XX XXX XXX" value={phone} onChange={(e) => setPhone(e.target.value)} required />
+                    </div>
+                  )}
+                  {mode === 'callback' && (
                     <>
-                      <div>
-                        <label className={labelClass}>Phone</label>
-                        <input type="tel" className={inputClass} placeholder="+254 7XX XXX XXX" value={phone} onChange={(e) => setPhone(e.target.value)} required />
-                      </div>
                       <div>
                         <label className={labelClass}>Email (optional)</label>
                         <input type="email" className={inputClass} placeholder="your@email.com" value={email} onChange={(e) => setEmail(e.target.value)} />
                       </div>
+                      <div>
+                        <label className={labelClass}>Preferred time</label>
+                        <select className={`${inputClass} bg-transparent appearance-none`} value={preferredTime} onChange={(e) => setPreferredTime(e.target.value)}>
+                          <option value="" className="bg-card">Select a time</option>
+                          <option value="morning" className="bg-card">Morning (8 AM – 12 PM)</option>
+                          <option value="afternoon" className="bg-card">Afternoon (12 – 4 PM)</option>
+                          <option value="evening" className="bg-card">Evening (4 – 6 PM)</option>
+                        </select>
+                      </div>
                     </>
                   )}
-                  <div>
-                    <label className={labelClass}>Country</label>
-                    <input className={inputClass} placeholder="Kenya, UAE, …" value={country} onChange={(e) => setCountry(e.target.value)} />
-                  </div>
-                  <div>
-                    <label className={labelClass}>Industry</label>
-                    <select className={`${inputClass} bg-transparent appearance-none`} value={industry} onChange={(e) => setIndustry(e.target.value)}>
-                      <option value="" className="bg-card">Select industry</option>
-                      {industries.map((i) => (
-                        <option key={i.slug} value={i.slug} className="bg-card">{i.name}</option>
-                      ))}
-                    </select>
-                  </div>
-                  <div>
-                    <label className={labelClass}>Use case</label>
-                    <select className={`${inputClass} bg-transparent appearance-none`} value={useCase} onChange={(e) => setUseCase(e.target.value)}>
-                      <option value="" className="bg-card">Select use case</option>
-                      {useCases.map((u) => (
-                        <option key={u.slug} value={u.slug} className="bg-card">{u.title}</option>
-                      ))}
-                    </select>
-                  </div>
-                  <div>
-                    <label className={labelClass}>Budget</label>
-                    <select className={`${inputClass} bg-transparent appearance-none`} value={budget} onChange={(e) => setBudget(e.target.value)}>
-                      <option value="" className="bg-card">Select budget</option>
-                      <option value="<25k" className="bg-card">Under $25k</option>
-                      <option value="25-100k" className="bg-card">$25k – $100k</option>
-                      <option value="100-500k" className="bg-card">$100k – $500k</option>
-                      <option value=">500k" className="bg-card">$500k+</option>
-                      <option value="exploring" className="bg-card">Just exploring</option>
-                    </select>
-                  </div>
-                  <div>
-                    <label className={labelClass}>Timeline</label>
-                    <select className={`${inputClass} bg-transparent appearance-none`} value={timeline} onChange={(e) => setTimeline(e.target.value)}>
-                      <option value="" className="bg-card">Select timeline</option>
-                      <option value="<1mo" className="bg-card">Within 1 month</option>
-                      <option value="1-3mo" className="bg-card">1 – 3 months</option>
-                      <option value="3-6mo" className="bg-card">3 – 6 months</option>
-                      <option value=">6mo" className="bg-card">6 months +</option>
-                    </select>
-                  </div>
-                  {mode === 'callback' && (
-                    <div>
-                      <label className={labelClass}>Preferred time</label>
-                      <select className={`${inputClass} bg-transparent appearance-none`} value={preferredTime} onChange={(e) => setPreferredTime(e.target.value)}>
-                        <option value="" className="bg-card">Select a time</option>
-                        <option value="morning" className="bg-card">Morning (8 AM – 12 PM)</option>
-                        <option value="afternoon" className="bg-card">Afternoon (12 – 4 PM)</option>
-                        <option value="evening" className="bg-card">Evening (4 – 6 PM)</option>
-                      </select>
-                    </div>
-                  )}
                 </div>
+
 
                 <div>
                   <label className={labelClass}>{mode === 'callback' ? 'Brief note (optional)' : 'Project details'}</label>

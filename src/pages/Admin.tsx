@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
 import { toast } from "@/hooks/use-toast";
 import { Trash2, RefreshCw, LogOut } from "lucide-react";
+import TelemetryPanel from "@/components/TelemetryPanel";
 
 interface Submission {
   id: string;
@@ -37,7 +38,7 @@ export default function Admin() {
   const [loadingMore, setLoadingMore] = useState(false);
   const [submissions, setSubmissions] = useState<Submission[]>([]);
   const [total, setTotal] = useState(0);
-  const [tab, setTab] = useState<"submissions" | "audit">("submissions");
+  const [tab, setTab] = useState<"telemetry" | "submissions" | "audit">("telemetry");
   const [logs, setLogs] = useState<AuditLog[]>([]);
   const [logsTotal, setLogsTotal] = useState(0);
   const sentinelRef = useRef<HTMLDivElement | null>(null);
@@ -196,7 +197,9 @@ export default function Admin() {
             <p className="text-sm text-muted-foreground">
               {tab === "submissions"
                 ? `${submissions.length} of ${total} submissions loaded`
-                : `${logs.length} of ${logsTotal} audit entries`}
+                : tab === "audit"
+                  ? `${logs.length} of ${logsTotal} audit entries`
+                  : "Live site & visitor telemetry"}
             </p>
           </div>
           <div className="flex gap-2">
@@ -211,19 +214,22 @@ export default function Admin() {
           </div>
         </header>
 
-        <div className="flex gap-2 border-b">
-          {(["submissions", "audit"] as const).map((t) => (
+        <div className="flex gap-2 border-b overflow-x-auto">
+          {(["telemetry", "submissions", "audit"] as const).map((t) => (
             <button
               key={t}
               onClick={() => setTab(t)}
-              className={`px-4 py-2 text-sm font-medium border-b-2 -mb-px transition-colors ${
+              className={`px-4 py-2 text-sm font-medium border-b-2 -mb-px transition-colors whitespace-nowrap ${
                 tab === t ? "border-primary text-primary" : "border-transparent text-muted-foreground hover:text-foreground"
               }`}
             >
-              {t === "submissions" ? "Submissions" : "Audit Log"}
+              {t === "telemetry" ? "Site Telemetry" : t === "submissions" ? "Submissions" : "Audit Log"}
             </button>
           ))}
         </div>
+
+        {tab === "telemetry" && <TelemetryPanel />}
+
 
         {tab === "submissions" && (
           <div className="space-y-3">
