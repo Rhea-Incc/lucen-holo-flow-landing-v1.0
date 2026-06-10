@@ -38,7 +38,7 @@ export default function Admin() {
   const [loadingMore, setLoadingMore] = useState(false);
   const [submissions, setSubmissions] = useState<Submission[]>([]);
   const [total, setTotal] = useState(0);
-  const [tab, setTab] = useState<"submissions" | "audit">("submissions");
+  const [tab, setTab] = useState<"telemetry" | "submissions" | "audit">("telemetry");
   const [logs, setLogs] = useState<AuditLog[]>([]);
   const [logsTotal, setLogsTotal] = useState(0);
   const sentinelRef = useRef<HTMLDivElement | null>(null);
