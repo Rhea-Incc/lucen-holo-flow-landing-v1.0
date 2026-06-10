@@ -68,9 +68,28 @@ export default function IndustryPage() {
         <StaggeredMediaGrid items={remaining} eyebrow="Sector visuals" heading={`${industry.name} in motion`} />
       )}
 
+      {/* Live infographic — animated counters + holographic backdrop */}
+      {industry.metrics && industry.metrics.length > 0 && (
+        <IndustryInfographic industryName={industry.name} metrics={industry.metrics} />
+      )}
+
       {scrollPanels.length > 0 && (
         <StickyScrollytell label="The Lucen advantage" panels={scrollPanels} />
       )}
+
+      {/* Holographic interface viewport */}
+      <section className="relative w-full h-[60vh] min-h-[420px] overflow-hidden">
+        <HolographicCanvas density={260} hue={195} intensity={1} />
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-background pointer-events-none" />
+        <div className="absolute inset-0 flex items-end">
+          <div className="max-w-7xl mx-auto px-6 pb-12 w-full">
+            <p className="text-xs font-display tracking-[0.35em] uppercase text-primary mb-2">Holographic Interface</p>
+            <h3 className="font-display text-2xl sm:text-4xl text-foreground max-w-2xl">
+              How {industry.name.toLowerCase()} audiences experience Lucen.
+            </h3>
+          </div>
+        </div>
+      </section>
 
       <div className="pt-8 pb-20 px-6">
         <div className="max-w-6xl mx-auto">
