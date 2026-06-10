@@ -174,13 +174,38 @@ export default function Contact() {
       <LucenHeader />
       <WhatsAppButton />
 
-      {/* Immersive Hero */}
-      <ImmersiveHero
-        src="/media/contact-hero.jpg"
-        eyebrow="Reach Out"
-        title="Let's scope your holographic deployment."
-        subtitle="Share a few details and a Lucen specialist will respond within one business day."
-      />
+      {/* Landscape glassmorphic hero — full-bleed, sits below fixed header */}
+      <section className="relative w-full pt-16">
+        <div className="relative w-screen left-1/2 right-1/2 -mx-[50vw] h-[68vh] min-h-[420px] max-h-[760px] overflow-hidden">
+          <OptimizedImage
+            src="/media/contact-hero.jpg"
+            alt="Holographic deployment by Lucen"
+            priority
+            fit="cover"
+            className="absolute inset-0 w-full h-full"
+          />
+          <div className="absolute inset-0 bg-gradient-to-b from-background/30 via-background/10 to-background/95 pointer-events-none" />
+          <div className="absolute inset-0 flex items-end">
+            <div className="max-w-7xl w-full mx-auto px-6 pb-12 sm:pb-16">
+              <motion.div
+                initial={{ opacity: 0, y: 24, filter: 'blur(12px)' }}
+                animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+                transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
+                className="glass-panel-elevated glow-edge p-6 sm:p-10 max-w-2xl"
+                style={{ backdropFilter: 'blur(22px)', WebkitBackdropFilter: 'blur(22px)' }}
+              >
+                <p className="text-xs sm:text-sm font-display tracking-[0.3em] uppercase text-primary mb-3">Reach Out</p>
+                <h1 className="font-display text-3xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-foreground">
+                  Let's scope your holographic deployment.
+                </h1>
+                <p className="text-muted-foreground font-body text-base sm:text-lg mt-4">
+                  Share a few details and a Lucen specialist will respond within one business day.
+                </p>
+              </motion.div>
+            </div>
+          </div>
+        </div>
+      </section>
 
       {/* Sticky-layered scrollytelling — frame orientation matches each media's intrinsic aspect */}
       <StickyScrollytell
