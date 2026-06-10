@@ -212,19 +212,22 @@ export default function Admin() {
           </div>
         </header>
 
-        <div className="flex gap-2 border-b">
-          {(["submissions", "audit"] as const).map((t) => (
+        <div className="flex gap-2 border-b overflow-x-auto">
+          {(["telemetry", "submissions", "audit"] as const).map((t) => (
             <button
               key={t}
               onClick={() => setTab(t)}
-              className={`px-4 py-2 text-sm font-medium border-b-2 -mb-px transition-colors ${
+              className={`px-4 py-2 text-sm font-medium border-b-2 -mb-px transition-colors whitespace-nowrap ${
                 tab === t ? "border-primary text-primary" : "border-transparent text-muted-foreground hover:text-foreground"
               }`}
             >
-              {t === "submissions" ? "Submissions" : "Audit Log"}
+              {t === "telemetry" ? "Site Telemetry" : t === "submissions" ? "Submissions" : "Audit Log"}
             </button>
           ))}
         </div>
+
+        {tab === "telemetry" && <TelemetryPanel />}
+
 
         {tab === "submissions" && (
           <div className="space-y-3">
