@@ -197,7 +197,9 @@ export default function Admin() {
             <p className="text-sm text-muted-foreground">
               {tab === "submissions"
                 ? `${submissions.length} of ${total} submissions loaded`
-                : `${logs.length} of ${logsTotal} audit entries`}
+                : tab === "audit"
+                  ? `${logs.length} of ${logsTotal} audit entries`
+                  : "Live site & visitor telemetry"}
             </p>
           </div>
           <div className="flex gap-2">
